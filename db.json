@@ -1,0 +1,304 @@
+{
+  "users": [
+    {
+      "id": "1",
+      "code": "PH001",
+      "password": "123456",
+      "name": "Nguyễn Văn A",
+      "email": "nguyenvana@gmail.com",
+      "phone": "0123456789",
+      "role": "phuhuynh"
+    },
+    {
+      "id": "2",
+      "code": "GV001",
+      "password": "123456",
+      "name": "Trần Thị B",
+      "email": "tranthib@gmail.com",
+      "phone": "0987654321",
+      "role": "giaovien"
+    },
+    {
+      "id": "3",
+      "code": "ADMIN",
+      "password": "admin123",
+      "name": "Admin",
+      "email": "admin@gmail.com",
+      "phone": "0909090909",
+      "role": "admin"
+    },
+    {
+      "id": "4",
+      "code": "DB001",
+      "password": "123456",
+      "name": "Lê Văn C",
+      "email": "levanc@gmail.com",
+      "phone": "0977777777",
+      "role": "daubep"
+    }
+  ],
+  "nutrition_reports": [
+    {
+      "id": 1,
+      "studentId": "HS001",
+      "date": "2024-03-15",
+      "calories": 1200,
+      "protein": "45g",
+      "carbs": "150g",
+      "fat": "35g",
+      "fiber": "25g",
+      "vitamins": ["A", "C", "D"],
+      "minerals": ["Ca", "Fe", "Zn"]
+    }
+  ],
+  "schedules": [
+    {
+      "id": 1,
+      "class": "Lớp Mầm",
+      "dayOfWeek": "Thứ 2",
+      "activities": [
+        {
+          "time": "07:30 - 08:00",
+          "activity": "Đón trẻ"
+        },
+        {
+          "time": "08:00 - 08:30",
+          "activity": "Điểm danh, thể dục"
+        },
+        {
+          "time": "08:30 - 09:30",
+          "activity": "Học tập"
+        }
+      ]
+    }
+  ],
+  "grades": [
+    {
+      "id": 1,
+      "studentId": "HS001",
+      "month": 3,
+      "year": 2024,
+      "categories": {
+        "theChat": "Tốt",
+        "nhanThuc": "Khá",
+        "ngonNgu": "Tốt",
+        "tinhCam": "Tốt",
+        "thamMy": "Khá"
+      },
+      "comments": "Bé ngoan, hòa đồng với bạn"
+    }
+  ],
+  "absence_requests": [
+    {
+      "id": 1,
+      "studentId": "HS001",
+      "startDate": "2024-03-20",
+      "endDate": "2024-03-22",
+      "reason": "Về quê",
+      "status": "pending",
+      "parentNote": "Gia đình có việc",
+      "teacherResponse": null
+    }
+  ],
+  "menu_reviews": [
+    {
+      "id": 1,
+      "teacherId": "GV001",
+      "menuId": 1,
+      "date": "2024-03-15",
+      "suitability": 4,
+      "comments": "Phù hợp với lứa tuổi, trẻ ăn ngon",
+      "suggestions": "Có thể tăng thêm rau xanh"
+    }
+  ],
+  "menu_requests": [
+    {
+      "id": 1,
+      "parentId": "PH001",
+      "studentId": "HS001",
+      "date": "2024-03-15",
+      "currentMenu": "Phở gà",
+      "requestedChange": "Bún bò",
+      "reason": "Con bị dị ứng với thịt gà",
+      "status": "pending",
+      "teacherResponse": null
+    }
+  ],
+  "menu_suggestions": [
+    {
+      "id": 1,
+      "teacherId": "GV001",
+      "dishName": "Cháo cá hồi",
+      "ingredients": ["Cá hồi", "Gạo", "Rau củ"],
+      "nutritionInfo": {
+        "calories": 350,
+        "protein": "20g",
+        "carbs": "45g",
+        "fat": "12g"
+      },
+      "ageGroup": "3-4 tuổi",
+      "status": "pending"
+    }
+  ],
+  "menus": [
+    {
+      "id": 1,
+      "date": "2024-03-15",
+      "meals": {
+        "breakfast": {
+          "name": "Phở gà",
+          "calories": 450,
+          "protein": "20g",
+          "carbs": "60g",
+          "fat": "15g",
+          "fiber": "3g",
+          "ageGroups": ["2-3", "3-4", "4-5"]
+        },
+        "lunch": {
+          "name": "Cơm gà rau củ",
+          "calories": 550,
+          "protein": "25g",
+          "carbs": "70g",
+          "fat": "18g",
+          "fiber": "5g",
+          "ageGroups": ["3-4", "4-5", "5-6"]
+        },
+        "snack": {
+          "name": "Sữa chua hoa quả",
+          "calories": 200,
+          "protein": "5g",
+          "carbs": "25g",
+          "fat": "8g",
+          "fiber": "2g",
+          "ageGroups": ["2-3", "3-4", "4-5", "5-6"]
+        }
+      }
+    }
+  ],
+  "menu_evaluations": [
+    {
+      "id": 1,
+      "menuId": 1,
+      "teacherId": "GV001",
+      "date": "2024-03-15",
+      "mealType": "breakfast",
+      "ratings": {
+        "taste": 4,
+        "nutrition": 5,
+        "presentation": 4,
+        "temperature": 5,
+        "portion": 4
+      },
+      "ageGroupSuitability": {
+        "2-3": true,
+        "3-4": true,
+        "4-5": false,
+        "5-6": false
+      },
+      "comments": "Phù hợp với trẻ nhỏ, cần điều chỉnh cho nhóm lớn hơn",
+      "suggestions": "Tăng khẩu phần cho nhóm 4-5 tuổi"
+    }
+  ],
+  "roles": [
+    {
+      "id": 1,
+      "name": "admin",
+      "permissions": [
+        "manage_users",
+        "manage_menus",
+        "manage_roles",
+        "view_reports"
+      ]
+    },
+    {
+      "id": 2,
+      "name": "giaovien",
+      "permissions": ["view_menus", "evaluate_menus", "manage_students"]
+    },
+    {
+      "id": 3,
+      "name": "phuhuynh",
+      "permissions": ["view_menus", "send_feedback", "view_reports"]
+    },
+    {
+      "id": 4,
+      "name": "daubep",
+      "permissions": [
+        "manage_menus",
+        "manage_dishes",
+        "view_suggestions",
+        "view_reports"
+      ]
+    }
+  ],
+  "system_reports": {
+    "user_stats": {
+      "total_users": 150,
+      "active_users": 120,
+      "by_role": {
+        "admin": 2,
+        "giaovien": 28,
+        "phuhuynh": 120
+      }
+    },
+    "menu_stats": {
+      "total_menus": 45,
+      "average_rating": 4.2,
+      "feedback_count": 89
+    }
+  },
+  "dishes": [
+    {
+      "id": 1,
+      "name": "Phở gà",
+      "category": "món chính",
+      "ingredients": [
+        {
+          "name": "Gà",
+          "amount": "300",
+          "unit": "g"
+        },
+        {
+          "name": "Phở",
+          "amount": "200",
+          "unit": "g"
+        }
+      ],
+      "nutrition": {
+        "calories": 450,
+        "protein": "25g",
+        "carbs": "60g",
+        "fat": "15g"
+      },
+      "recipe": "1. Nấu nước dùng\n2. Luộc gà\n3. Trụng phở\n4. Thêm rau và gia vị",
+      "usageCount": 15,
+      "rating": 4.5
+    }
+  ],
+  "menu_suggestions": [
+    {
+      "id": 1,
+      "userId": "GV001",
+      "userRole": "giaovien",
+      "dishName": "Cháo cá hồi",
+      "reason": "Tốt cho phát triển não bộ",
+      "status": "pending"
+    }
+  ],
+  "dish_statistics": {
+    "most_popular": [
+      {
+        "dishId": 1,
+        "name": "Phở gà",
+        "usageCount": 15,
+        "averageRating": 4.5
+      }
+    ],
+    "monthly_trends": {
+      "2024-03": {
+        "total_dishes": 45,
+        "average_rating": 4.2
+      }
+    }
+  }
+}
