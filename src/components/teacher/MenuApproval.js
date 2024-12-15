@@ -37,7 +37,7 @@ function MenuApproval() {
 
     return (
         <div className="space-y-6">
-            <h2 className="text-2xl font-bold mb-6">Phê duyệt yêu cầu thay đổi thực đơn của học sinh</h2>
+            <h2 className="text-2xl font-bold mb-6">Phê duyệt yêu cầu thay đổi thực đơn của người kháckhác</h2>
 
             {requests.map(request => (
                 <div key={request.id} className="bg-white rounded-lg shadow p-6">
