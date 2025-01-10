@@ -65,6 +65,9 @@ function MenuManagement() {
             }
         }
     });
+    const [showApplyModal, setShowApplyModal] = useState(false);
+    const [selectedMenuForApply, setSelectedMenuForApply] = useState(null);
+    const [applyDate, setApplyDate] = useState('');
 
     useEffect(() => {
         fetchMenus();
@@ -192,6 +195,108 @@ function MenuManagement() {
         }
     };
 
+    const handleEditMenu = (menu) => {
+        setSelectedMenu(menu);
+        setFormData({
+            date: menu.date,
+            applyFor: {
+                type: menu.applyFor?.type || 'all_class',
+                studentId: menu.applyFor?.studentId || '',
+                className: menu.applyFor?.className || '',
+                note: menu.applyFor?.note || ''
+            },
+            meals: {
+                breakfast: {
+                    name: menu.meals.breakfast?.name || '',
+                    calories: menu.meals.breakfast?.calories || '',
+                    protein: menu.meals.breakfast?.protein || '',
+                    carbs: menu.meals.breakfast?.carbs || '',
+                    fat: menu.meals.breakfast?.fat || '',
+                    fiber: menu.meals.breakfast?.fiber || '',
+                    calcium: menu.meals.breakfast?.calcium || '',
+                    iron: menu.meals.breakfast?.iron || '',
+                    vitaminA: menu.meals.breakfast?.vitaminA || '',
+                    vitaminC: menu.meals.breakfast?.vitaminC || '',
+                    sugar: menu.meals.breakfast?.sugar || '',
+                    sodium: menu.meals.breakfast?.sodium || '',
+                    cookingMethods: menu.meals.breakfast?.cookingMethods || [],
+                    ageGroups: menu.meals.breakfast?.ageGroups || [],
+                    ingredients: menu.meals.breakfast?.ingredients || []
+                },
+                lunch: {
+                    name: menu.meals.lunch?.name || '',
+                    calories: menu.meals.lunch?.calories || '',
+                    protein: menu.meals.lunch?.protein || '',
+                    carbs: menu.meals.lunch?.carbs || '',
+                    fat: menu.meals.lunch?.fat || '',
+                    fiber: menu.meals.lunch?.fiber || '',
+                    calcium: menu.meals.lunch?.calcium || '',
+                    iron: menu.meals.lunch?.iron || '',
+                    vitaminA: menu.meals.lunch?.vitaminA || '',
+                    vitaminC: menu.meals.lunch?.vitaminC || '',
+                    sugar: menu.meals.lunch?.sugar || '',
+                    sodium: menu.meals.lunch?.sodium || '',
+                    cookingMethods: menu.meals.lunch?.cookingMethods || [],
+                    ageGroups: menu.meals.lunch?.ageGroups || [],
+                    ingredients: menu.meals.lunch?.ingredients || []
+                },
+                snack: {
+                    name: menu.meals.snack?.name || '',
+                    calories: menu.meals.snack?.calories || '',
+                    protein: menu.meals.snack?.protein || '',
+                    carbs: menu.meals.snack?.carbs || '',
+                    fat: menu.meals.snack?.fat || '',
+                    fiber: menu.meals.snack?.fiber || '',
+                    calcium: menu.meals.snack?.calcium || '',
+                    iron: menu.meals.snack?.iron || '',
+                    vitaminA: menu.meals.snack?.vitaminA || '',
+                    vitaminC: menu.meals.snack?.vitaminC || '',
+                    sugar: menu.meals.snack?.sugar || '',
+                    sodium: menu.meals.snack?.sodium || '',
+                    cookingMethods: menu.meals.snack?.cookingMethods || [],
+                    ageGroups: menu.meals.snack?.ageGroups || [],
+                    ingredients: menu.meals.snack?.ingredients || []
+                }
+            }
+        });
+        
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+    };
+
+    const handleApplyMenu = async () => {
+        if (!applyDate) {
+            alert('Vui lòng chọn ngày áp dụng');
+            return;
+        }
+
+        try {
+            const newMenu = {
+                ...selectedMenuForApply,
+                id: undefined,
+                date: applyDate
+            };
+
+            const response = await fetch('http://localhost:3001/menus', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(newMenu),
+            });
+
+            if (response.ok) {
+                alert('Áp dụng thực đơn thành công!');
+                setShowApplyModal(false);
+                setSelectedMenuForApply(null);
+                setApplyDate('');
+                fetchMenus();
+            }
+        } catch (error) {
+            console.error('Lỗi khi áp dụng thực đơn:', error);
+            alert('Có lỗi xảy ra khi áp dụng thực đơn');
+        }
+    };
+
     return (
         <div className="space-y-6">
             <div className="flex justify-between items-center mb-6">
@@ -199,6 +304,21 @@ function MenuManagement() {
             </div>
 
             <form onSubmit={handleSubmit} className="bg-white rounded-lg shadow p-6 space-y-6">
+                <div className="flex justify-between items-center mb-4">
+                    <h3 className="text-xl font-semibold text-gray-800">
+                        {selectedMenu ? 'Chỉnh sửa thực đơn' : 'Thêm thực đơn mới'}
+                    </h3>
+                    {selectedMenu && (
+                        <button
+                            type="button"
+                            onClick={resetForm}
+                            className="text-gray-600 hover:text-gray-800"
+                        >
+                            Hủy chỉnh sửa
+                        </button>
+                    )}
+                </div>
+
                 <div>
                     <label className="block mb-2">Ngày</label>
                     <input
@@ -691,7 +811,7 @@ function MenuManagement() {
                         onClick={resetForm}
                         className="px-4 py-2 border rounded hover:bg-gray-100"
                     >
-                        Hủy
+                        {selectedMenu ? 'Hủy' : 'Đặt lại'}
                     </button>
                     <button
                         type="submit"
@@ -702,36 +822,212 @@ function MenuManagement() {
                 </div>
             </form>
 
-            <div className="mt-6">
-                <h3 className="text-xl font-semibold mb-4">Danh sách thực đơn</h3>
+            <div className="mt-6 max-w-7xl mx-auto">
+                <h3 className="text-2xl font-bold mb-6 text-gray-800 border-b pb-2">Danh sách thực đơn</h3>
+                
                 {menus.map(menu => (
-                    <div key={menu.id} className="mb-4">
-                        <div className="grid md:grid-cols-3 gap-4">
-                            {Object.entries(menu.meals).map(([meal, data]) => (
-                                <div key={meal} className="border rounded p-3">
-                                    <h5 className="font-medium capitalize mb-2">
-                                        {meal === 'breakfast' ? 'Bữa sáng' :
-                                         meal === 'lunch' ? 'Bữa trưa' :
-                                         'Bữa phụ'}
-                                    </h5>
-                                    <p>{data.name}</p>
-                                    <p className="text-sm text-gray-600">
-                                        Calories: {data.calories}, Protein: {data.protein}
-                                    </p>
+                    <div key={menu.id} className="mb-8 bg-white rounded-xl shadow-lg overflow-hidden">
+                        <div className="bg-teal-500 text-white px-6 py-4">
+                            <div className="flex justify-between items-center">
+                                <div>
+                                    <h4 className="text-lg font-semibold">Thực đơn ngày: {menu.date}</h4>
+                                    <p className="text-teal-100 text-sm mt-1">ID: {menu.id}</p>
                                 </div>
-                            ))}
+                                <div className="flex gap-2">
+                                    <button
+                                        onClick={() => {
+                                            setSelectedMenuForApply(menu);
+                                            setShowApplyModal(true);
+                                        }}
+                                        className="px-4 py-2 bg-green-400 hover:bg-green-500 text-white rounded-lg transition-colors flex items-center gap-2"
+                                    >
+                                        <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
+                                        </svg>
+                                        Áp dụng
+                                    </button>
+                                    <button
+                                        onClick={() => handleEditMenu(menu)}
+                                        className="px-4 py-2 bg-yellow-400 hover:bg-yellow-500 text-white rounded-lg transition-colors flex items-center gap-2"
+                                    >
+                                        <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
+                                        </svg>
+                                        Chỉnh sửa
+                                    </button>
+                                    <button
+                                        onClick={() => handleDeleteMenu(menu.id)}
+                                        className="px-4 py-2 bg-red-400 hover:bg-red-500 text-white rounded-lg transition-colors flex items-center gap-2"
+                                    >
+                                        <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
+                                        </svg>
+                                        Xóa thực đơn
+                                    </button>
+                                </div>
+                            </div>
                         </div>
-                        <div className="mt-2 flex justify-end">
-                            <button
-                                onClick={() => handleDeleteMenu(menu.id)}
-                                className="px-3 py-1 bg-red-500 text-white rounded hover:bg-red-600"
-                            >
-                                Xóa thực đơn
-                            </button>
+
+                        <div className="p-6">
+                            <div className="grid md:grid-cols-3 gap-6">
+                                {Object.entries(menu.meals).map(([meal, data]) => (
+                                    <div key={meal} className="bg-gray-50 rounded-lg p-4 border border-gray-200 hover:border-teal-200 transition-all">
+                                        <div className="flex items-center gap-2 mb-3">
+                                            <span className={`w-3 h-3 rounded-full ${
+                                                meal === 'breakfast' ? 'bg-amber-300' :
+                                                meal === 'lunch' ? 'bg-teal-300' : 'bg-sky-300'
+                                            }`}></span>
+                                            <h5 className="font-semibold text-gray-700 capitalize">
+                                                {meal === 'breakfast' ? 'Bữa sáng' :
+                                                 meal === 'lunch' ? 'Bữa trưa' : 'Bữa phụ'}
+                                            </h5>
+                                        </div>
+                                        
+                                        <div className="space-y-4">
+                                            <div className="bg-white p-3 rounded-md border border-gray-100">
+                                                <p className="font-medium text-gray-800">{data.name}</p>
+                                            </div>
+                                            
+                                            <div className="grid grid-cols-2 gap-2">
+                                                <div className="bg-white p-2 rounded-md border border-gray-100">
+                                                    <p className="text-sm text-gray-500">Calories</p>
+                                                    <p className="font-medium text-teal-600">{data.calories} kcal</p>
+                                                </div>
+                                                <div className="bg-white p-2 rounded-md border border-gray-100">
+                                                    <p className="text-sm text-gray-500">Protein</p>
+                                                    <p className="font-medium text-teal-600">{data.protein}g</p>
+                                                </div>
+                                            </div>
+
+                                            <div className="grid grid-cols-2 gap-2">
+                                                {[
+                                                    { label: 'Chất đạm', value: data.protein, unit: 'g' },
+                                                    { label: 'Tinh bột', value: data.carbs, unit: 'g' },
+                                                    { label: 'Chất béo', value: data.fat, unit: 'g' },
+                                                    { label: 'Chất xơ', value: data.fiber, unit: 'g' },
+                                                    { label: 'Canxi', value: data.calcium, unit: 'mg' },
+                                                    { label: 'Sắt', value: data.iron, unit: 'mg' },
+                                                    { label: 'Vitamin A', value: data.vitaminA, unit: 'mcg' },
+                                                    { label: 'Vitamin C', value: data.vitaminC, unit: 'mg' },
+                                                    { label: 'Đường', value: data.sugar, unit: 'g' },
+                                                    { label: 'Natri', value: data.sodium, unit: 'mg' }
+                                                ].map(nutrient => nutrient.value && (
+                                                    <div key={nutrient.label} className="bg-white p-2 rounded-md border border-gray-100">
+                                                        <p className="text-sm text-gray-500">{nutrient.label}</p>
+                                                        <p className="font-medium text-teal-600">{nutrient.value}{nutrient.unit}</p>
+                                                    </div>
+                                                ))}
+                                            </div>
+
+                                            {data.cookingMethods?.length > 0 && (
+                                                <div className="bg-white p-3 rounded-md border border-gray-100">
+                                                    <p className="text-sm text-gray-500 mb-2">Cách chế biến:</p>
+                                                    <div className="flex flex-wrap gap-2">
+                                                        {data.cookingMethods.map(method => (
+                                                            <span key={method} className="px-2 py-1 bg-teal-50 text-teal-700 rounded-full text-sm">
+                                                                {method}
+                                                            </span>
+                                                        ))}
+                                                    </div>
+                                                </div>
+                                            )}
+
+                                            {data.ingredients?.length > 0 && (
+                                                <div className="bg-white p-3 rounded-md border border-gray-100">
+                                                    <p className="text-sm text-gray-500 mb-2">Nguyên liệu:</p>
+                                                    <div className="space-y-1">
+                                                        {data.ingredients.map((ingredient, idx) => (
+                                                            <p key={idx} className="text-sm">
+                                                                {ingredient.name}: {ingredient.amount} {ingredient.unit}
+                                                            </p>
+                                                        ))}
+                                                    </div>
+                                                </div>
+                                            )}
+
+                                            {data.ageGroups?.length > 0 && (
+                                                <div className="bg-white p-3 rounded-md border border-gray-100">
+                                                    <p className="text-sm text-gray-500 mb-2">Độ tuổi phù hợp:</p>
+                                                    <div className="flex flex-wrap gap-2">
+                                                        {data.ageGroups.map(age => (
+                                                            <span key={age} className="px-2 py-1 bg-purple-50 text-purple-700 rounded-full text-sm">
+                                                                {age} tuổi
+                                                            </span>
+                                                        ))}
+                                                    </div>
+                                                </div>
+                                            )}
+                                        </div>
+                                    </div>
+                                ))}
+                            </div>
+
+                            <div className="mt-6 pt-4 border-t border-gray-200">
+                                <div className="space-y-2">
+                                    <div className="flex items-center gap-2 text-sm text-gray-600">
+                                        <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 text-purple-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z" />
+                                        </svg>
+                                        <span className="font-medium">Áp dụng cho:</span>
+                                        <span>
+                                            {menu.applyFor && menu.applyFor.type ? (
+                                                menu.applyFor.type === 'all_class' ? 'Tất cả các lớp' :
+                                                menu.applyFor.type === 'specific_class' ? `Lớp ${menu.applyFor.className}` :
+                                                menu.applyFor.type === 'specific_student' ? `Học sinh: ${menu.applyFor.studentId}` :
+                                                menu.applyFor.type === 'special_diet' ? 'Chế độ ăn đặc biệt' : 'Sự kiện đặc biệt'
+                                            ) : 'Không xác định'}
+                                        </span>
+                                    </div>
+                                    {menu.applyFor?.note && (
+                                        <div className="text-sm text-gray-600 ml-7">
+                                            <span className="font-medium">Ghi chú:</span> {menu.applyFor.note}
+                                        </div>
+                                    )}
+                                </div>
+                            </div>
                         </div>
                     </div>
                 ))}
             </div>
+
+            {showApplyModal && (
+                <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+                    <div className="bg-white rounded-lg p-6 w-96">
+                        <h3 className="text-xl font-semibold mb-4">Áp dụng thực đơn cho ngày khác</h3>
+                        <div className="mb-4">
+                            <label className="block text-sm font-medium text-gray-700 mb-2">
+                                Chọn ngày áp dụng
+                            </label>
+                            <input
+                                type="date"
+                                value={applyDate}
+                                onChange={(e) => setApplyDate(e.target.value)}
+                                className="w-full border rounded-lg px-3 py-2"
+                                min={new Date().toISOString().split('T')[0]}
+                                required
+                            />
+                        </div>
+                        <div className="flex justify-end space-x-3">
+                            <button
+                                onClick={() => {
+                                    setShowApplyModal(false);
+                                    setSelectedMenuForApply(null);
+                                    setApplyDate('');
+                                }}
+                                className="px-4 py-2 border rounded-lg hover:bg-gray-100"
+                            >
+                                Hủy
+                            </button>
+                            <button
+                                onClick={handleApplyMenu}
+                                className="px-4 py-2 bg-green-500 text-white rounded-lg hover:bg-green-600"
+                            >
+                                Xác nhận
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            )}
         </div>
     );
 }
