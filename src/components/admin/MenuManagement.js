@@ -550,7 +550,6 @@ function MenuManagement() {
                                             }
                                         })}
                                         className="w-full border rounded px-3 py-2"
-                                        required
                                     >
                                         <option value="">Không</option>
                                         <option value="200">200 kcal</option>
@@ -572,7 +571,6 @@ function MenuManagement() {
                                             }
                                         })}
                                         className="w-full border rounded px-3 py-2"
-                                        required
                                     >
                                         <option value="">Không</option>
                                         <option value="5">5g</option>
@@ -594,7 +592,6 @@ function MenuManagement() {
                                             }
                                         })}
                                         className="w-full border rounded px-3 py-2"
-                                        required
                                     >
                                         <option value="">Không</option>
                                         <option value="20">20g</option>
@@ -616,7 +613,6 @@ function MenuManagement() {
                                             }
                                         })}
                                         className="w-full border rounded px-3 py-2"
-                                        required
                                     >
                                         <option value="">Không</option>
                                         <option value="5">5g</option>

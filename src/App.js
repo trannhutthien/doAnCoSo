@@ -122,7 +122,7 @@ function App() {
           <Route path="roles" element={<RoleManagement />} />
         </Route>
         <Route path="/daubep" element={<ChefDashboard />}>
-          <Route path="thucdon" element={<MenuBuilder />} />
+          <Route path="thucdon" element={<MenuManagement />} />
           <Route path="dexuat" element={<SuggestionViewer />} />
           <Route path="baocao" element={<MenuReport />} />
         </Route>
