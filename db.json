@@ -155,43 +155,168 @@
   "menu_suggestions": [
     {
       "id": "1",
-      "userId": "GV001",
-      "userRole": "giaovien",
-      "dishName": "Cháo cá hồi",
-      "reason": "Tốt cho phát triển não bộ",
-      "status": "pending"
+      "date": "2024-03-20",
+      "mealType": "lunch",
+      "teacherId": "GV001",
+      "teacherName": "Nguyễn Văn A",
+      "mainDish": {
+        "name": "Cơm gà xối mỡ",
+        "ingredients": "Gạo, thịt gà, hành phi, rau răm",
+        "nutrition": "Protein: 25g, Carbs: 45g, Fat: 15g",
+        "allergyInfo": "Không chứa hải sản, không chứa đậu phộng"
+      },
+      "sideDish": {
+        "name": "Rau cải xào",
+        "ingredients": "Rau cải, tỏi, dầu ăn",
+        "nutrition": "Vitamin C, Chất xơ"
+      },
+      "soup": {
+        "name": "Canh cải nấu thịt",
+        "ingredients": "Cải thảo, thịt xay, hành ngò",
+        "nutrition": "Protein: 10g, Vitamin A"
+      },
+      "dessert": {
+        "name": "Trái cây theo mùa",
+        "ingredients": "Táo, lê, cam",
+        "nutrition": "Vitamin C, Chất xơ"
+      },
+      "note": "Thực đơn cân bằng dinh dưỡng",
+      "reason": "Phù hợp với thời tiết và độ tuổi của trẻ",
+      "status": "approved",
+      "createdAt": "2024-03-15T08:00:00.000Z",
+      "updatedAt": "2025-02-04T16:39:01.169Z"
     },
     {
-      "id": "4961",
-      "dishName": "cơm chiên",
-      "ingredients": [
-        "ngon"
-      ],
-      "nutritionInfo": {
-        "calories": "234",
-        "protein": "434",
-        "carbs": "342",
-        "fat": "456"
+      "id": "d2c0",
+      "date": "2025-02-05",
+      "mealType": "lunch",
+      "mainDish": {
+        "name": "cơm chiên hải sản",
+        "ingredients": "cơm + tơm ",
+        "nutrition": "tinh bột ",
+        "allergyInfo": ""
       },
-      "ageGroup": "3-4",
-      "teacherId": "GV001",
-      "status": "pending"
+      "sideDish": {
+        "name": "mự xàu",
+        "ingredients": "mực ",
+        "nutrition": "clori"
+      },
+      "soup": {
+        "name": "súp cua",
+        "ingredients": "cua + trứng bách thảo",
+        "nutrition": ""
+      },
+      "dessert": {
+        "name": "chuối",
+        "ingredients": "chuối",
+        "nutrition": ""
+      },
+      "note": "",
+      "reason": "bỏ sung cho trẻ gầy",
+      "teacherId": "4",
+      "teacherName": "Lê Văn C",
+      "status": "approved",
+      "createdAt": "2025-02-04T16:12:31.884Z",
+      "updatedAt": "2025-02-04T16:38:55.556Z"
     },
     {
-      "id": "1c75",
-      "dishName": "thịt luộc",
-      "ingredients": [
-        "ngon"
-      ],
-      "nutritionInfo": {
-        "calories": "24355",
-        "protein": "243",
-        "carbs": "234",
-        "fat": "234"
+      "id": "ffdf",
+      "date": "2025-02-06",
+      "mealType": "lunch",
+      "mainDish": {
+        "name": "cơm trắng thịt kho",
+        "ingredients": "gạo + thịt heo",
+        "nutrition": "tinh bột , đạm",
+        "allergyInfo": ""
       },
-      "ageGroup": "3-4",
-      "teacherId": "GV001",
-      "status": "pending"
+      "sideDish": {
+        "name": "canh cải thảo",
+        "ingredients": "cải thảo",
+        "nutrition": "chất sơ"
+      },
+      "soup": {
+        "name": "súp cua",
+        "ingredients": "cua trứng bách thảo",
+        "nutrition": ""
+      },
+      "dessert": {
+        "name": "táo",
+        "ingredients": "táo",
+        "nutrition": "vitamin a"
+      },
+      "note": "",
+      "reason": "bổ sung cho trẻ gầy",
+      "teacherId": "4",
+      "teacherName": "Lê Văn C",
+      "status": "approved",
+      "createdAt": "2025-02-04T16:50:16.924Z",
+      "updatedAt": "2025-02-04T16:50:31.678Z"
+    },
+    {
+      "id": "755b",
+      "date": "2025-02-10",
+      "mealType": "lunch",
+      "mainDish": {
+        "name": "cơm cà ri ",
+        "ingredients": "gạo ,cà ri gà",
+        "nutrition": "tinh bột , đạm",
+        "allergyInfo": ""
+      },
+      "sideDish": {
+        "name": "canh cải bẹ xạm",
+        "ingredients": "cảo bẹ xanh",
+        "nutrition": "chất sơ"
+      },
+      "soup": {
+        "name": "sớm cải trắng",
+        "ingredients": "củ cải trắng",
+        "nutrition": ""
+      },
+      "dessert": {
+        "name": "quít",
+        "ingredients": "quít",
+        "nutrition": ""
+      },
+      "note": "",
+      "reason": "bổ sung buổi trưa",
+      "teacherId": "4",
+      "teacherName": "Lê Văn C",
+      "status": "approved",
+      "createdAt": "2025-02-04T16:56:22.745Z",
+      "updatedAt": "2025-02-04T16:56:32.366Z"
+    },
+    {
+      "id": "840b",
+      "date": "2025-02-11",
+      "mealType": "snack",
+      "mainDish": {
+        "name": "cháo lòng",
+        "ingredients": "gạo ,lòng heo",
+        "nutrition": "tinh bột ",
+        "allergyInfo": ""
+      },
+      "sideDish": {
+        "name": "",
+        "ingredients": "",
+        "nutrition": ""
+      },
+      "soup": {
+        "name": "",
+        "ingredients": "",
+        "nutrition": ""
+      },
+      "dessert": {
+        "name": "xoài chín",
+        "ingredients": "",
+        "nutrition": ""
+      },
+      "note": "",
+      "reason": "bổ sung bửa phụ cho trẻ",
+      "teacherId": "4",
+      "teacherName": "Lê Văn C",
+      "status": "approved",
+      "createdAt": "2025-02-04T16:59:26.789Z",
+      "updatedAt": "2025-02-04T16:59:35.097Z"
     }
   ],
   "menus": [
@@ -846,18 +971,15 @@
       "createdAt": "2025-02-04T15:25:21.991Z",
       "status": "approved",
       "teacherResponse": ""
-    },
+    }
+  ],
+  "reports": [
     {
-      "id": "ba04",
-      "userId": "2",
-      "parentName": "Trần Thị B",
-      "menuDate": "2025-02-06",
-      "content": "bửa tối chưa phù hươp",
-      "allergies": "",
-      "preferences": "",
-      "createdAt": "2025-02-04T15:43:52.184Z",
-      "status": "approved",
-      "teacherResponse": ""
+      "id": "1",
+      "title": "Báo cáo tháng 3/2024",
+      "date": "2024-03-01",
+      "type": "Báo cáo chung",
+      "content": "Tổng hợp hoạt động và phản hồi trong tháng"
     }
   ]
 }
