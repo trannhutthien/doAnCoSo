@@ -20,6 +20,9 @@ function TeacherDashboard() {
                             <Link to="/giaovien/dexuat" className="hover:bg-green-700 px-3 py-2 rounded">
                                 Đề xuất thực đơn
                             </Link>
+                            <Link to="/giaovien/phe-duyet-phan-hoi" className="hover:bg-blue-700 px-3 py-2 rounded">
+                                Phê duyệt phản hồi
+                            </Link>
                         </div>
                     </div>
                 </div>

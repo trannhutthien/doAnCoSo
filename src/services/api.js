@@ -1,3 +1,5 @@
+import axios from 'axios';
+
 const API_URL = 'http://localhost:3001';
 
 export const loginUser = async (code, password) => {
@@ -60,5 +62,16 @@ export const registerUser = async (userData) => {
         return userWithoutPassword;
     } catch (error) {
         throw error;
+    }
+};
+
+export const saveFeedback = async (feedbackData) => {
+    try {
+        console.log('Sending feedback data:', feedbackData);
+        const response = await axios.post(`${API_URL}/feedbacks`, feedbackData);
+        console.log('Server response:', response.data);
+        return response.data;
+    } catch (error) {
+        throw new Error('Không thể gửi phản hồi: ' + error.message);
     }
 }; 

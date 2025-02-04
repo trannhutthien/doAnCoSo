@@ -813,5 +813,51 @@
         "average_rating": 4.2
       }
     }
-  }
+  },
+  "feedbacks": [
+    {
+      "id": 1,
+      "userId": "user_id",
+      "parentName": "Tên phụ huynh",
+      "content": "Nội dung phản hồi",
+      "createdAt": "2024-03-20T10:00:00Z",
+      "status": "pending"
+    },
+    {
+      "id": "a407",
+      "userId": "1",
+      "parentName": "Nguyễn Văn A",
+      "menuDate": "2025-02-04",
+      "content": "bửa sáng chưa phù hợp ",
+      "allergies": "dị ứng hải sản",
+      "preferences": "thích sinh tố bơ",
+      "createdAt": "2025-02-04T15:15:05.197Z",
+      "status": "approved",
+      "teacherResponse": ""
+    },
+    {
+      "id": "c0bb",
+      "userId": "2",
+      "parentName": "Trần Thị B",
+      "menuDate": "2025-02-05",
+      "content": "bửa trưa chưa phù hợp ",
+      "allergies": "",
+      "preferences": "",
+      "createdAt": "2025-02-04T15:25:21.991Z",
+      "status": "approved",
+      "teacherResponse": ""
+    },
+    {
+      "id": "ba04",
+      "userId": "2",
+      "parentName": "Trần Thị B",
+      "menuDate": "2025-02-06",
+      "content": "bửa tối chưa phù hươp",
+      "allergies": "",
+      "preferences": "",
+      "createdAt": "2025-02-04T15:43:52.184Z",
+      "status": "approved",
+      "teacherResponse": ""
+    }
+  ]
 }

@@ -12,16 +12,16 @@ function AdminDashboard() {
                         </div>
                         <div className="flex space-x-4">
                             <Link to="/admin/users" className="hover:bg-purple-700 px-3 py-2 rounded">
-                                Quản lý tài khoản
+                                Quản lý người dùng
                             </Link>
                             <Link to="/admin/menus" className="hover:bg-purple-700 px-3 py-2 rounded">
                                 Quản lý thực đơn
                             </Link>
+                            <Link to="/admin/reports" className="hover:bg-purple-700 px-3 py-2 rounded">
+                                Báo cáo & Phản hồi
+                            </Link>
                             <Link to="/admin/roles" className="hover:bg-purple-700 px-3 py-2 rounded">
                                 Phân quyền
-                            </Link>
-                            <Link to="/admin/reports" className="hover:bg-purple-700 px-3 py-2 rounded">
-                                Báo cáo
                             </Link>
                         </div>
                     </div>
