@@ -317,12 +317,78 @@
       "status": "approved",
       "createdAt": "2025-02-04T16:59:26.789Z",
       "updatedAt": "2025-02-04T16:59:35.097Z"
+    },
+    {
+      "id": "fb2e",
+      "date": "2025-03-25",
+      "mealType": "lunch",
+      "mainDish": {
+        "name": "cơm chien hải san ",
+        "ingredients": "gạo + mực +tôm + rau củ các loại",
+        "nutrition": "ewgvqarwvbg",
+        "allergyInfo": "fva"
+      },
+      "sideDish": {
+        "name": "",
+        "ingredients": "",
+        "nutrition": ""
+      },
+      "soup": {
+        "name": "",
+        "ingredients": "",
+        "nutrition": ""
+      },
+      "dessert": {
+        "name": "",
+        "ingredients": "",
+        "nutrition": ""
+      },
+      "note": "",
+      "reason": "ưerfgqrv",
+      "teacherId": "1",
+      "teacherName": "Nguyễn Văn A",
+      "status": "rejected",
+      "createdAt": "2025-03-25T03:01:08.458Z",
+      "updatedAt": "2025-03-25T03:01:34.514Z"
+    },
+    {
+      "id": "f89e",
+      "date": "2025-03-27",
+      "mealType": "lunch",
+      "mainDish": {
+        "name": "cơm chiên hải sản",
+        "ingredients": "gạo , mực tôm , trứng ,rau củ",
+        "nutrition": "bổ sung cho trẻ kén ăn",
+        "allergyInfo": ""
+      },
+      "sideDish": {
+        "name": "súp cua",
+        "ingredients": "nấm ,thịt cua ,trừn bách thảo, bột nấu súp",
+        "nutrition": ""
+      },
+      "soup": {
+        "name": "",
+        "ingredients": "",
+        "nutrition": ""
+      },
+      "dessert": {
+        "name": "chuối chín",
+        "ingredients": "",
+        "nutrition": ""
+      },
+      "note": "",
+      "reason": "đề xuất theo yêu cầu phụ huynh",
+      "teacherId": "1",
+      "teacherName": "Nguyễn Văn A",
+      "status": "approved",
+      "createdAt": "2025-03-25T14:25:35.611Z",
+      "updatedAt": "2025-03-25T14:25:54.187Z"
     }
   ],
   "menus": [
     {
-      "id": "927f",
-      "date": "2025-01-21",
+      "id": "41f6",
+      "date": "2025-03-25",
       "applyFor": {
         "type": "all_class",
         "studentId": "",
@@ -331,352 +397,317 @@
       },
       "meals": {
         "breakfast": {
-          "name": "hủ tiếu chả viên ",
-          "calories": "200",
-          "protein": "10",
+          "name": "Cháo yến mạch với chuối và mật ông",
+          "calories": "300",
+          "protein": "5",
           "carbs": "20",
           "fat": "5",
           "fiber": "4",
-          "calcium": "200",
-          "iron": "6",
-          "vitaminA": "",
-          "vitaminC": "",
+          "calcium": "100",
+          "iron": "2",
+          "vitaminA": "100",
+          "vitaminC": "10",
           "sugar": "",
-          "sodium": "",
-          "cookingMethods": [
-            "nuoc"
-          ],
-          "ageGroups": [
-            "4-5"
-          ],
-          "ingredients": [
-            {
-              "name": "hủ tiếu",
-              "amount": "2",
-              "unit": "kg"
-            },
-            {
-              "name": "chả viên ",
-              "amount": "3",
-              "unit": "kg"
-            },
-            {
-              "name": "rau củ các loại ",
-              "amount": "4",
-              "unit": "kg"
-            },
-            {
-              "name": "xương heo",
-              "amount": "5",
-              "unit": "kg"
-            }
-          ]
-        },
-        "lunch": {
-          "name": "cơm chiên + thị kho +rau cải +khổ qua dồn thịt",
-          "calories": "300",
-          "protein": "10",
-          "carbs": "40",
-          "fat": "10",
-          "fiber": "4",
-          "calcium": "300",
-          "iron": "6",
-          "vitaminA": "200",
-          "vitaminC": "20",
-          "sugar": "5",
           "sodium": "100",
           "cookingMethods": [
-            "chien",
             "soup",
-            "kho",
             "nuoc"
           ],
           "ageGroups": [
-            "4-5"
-          ],
-          "ingredients": [
-            {
-              "name": "gạo dẽo",
-              "amount": "3",
-              "unit": "kg"
-            },
-            {
-              "name": "thịt heo ",
-              "amount": "4",
-              "unit": "kg"
-            },
-            {
-              "name": "cải bẹ xanh",
-              "amount": "7",
-              "unit": "kg"
-            },
-            {
-              "name": "khổ qua",
-              "amount": "3",
-              "unit": "kg"
-            },
-            {
-              "name": "thịt heo bầm",
-              "amount": "12",
-              "unit": "kg"
-            }
-          ]
-        },
-        "snack": {
-          "name": "sinh tố mãn cầu",
-          "calories": "400",
-          "protein": "10",
-          "carbs": "30",
-          "fat": "15",
-          "fiber": "6",
-          "calcium": "",
-          "iron": "",
-          "vitaminA": "300",
-          "vitaminC": "20",
-          "sugar": "10",
-          "sodium": "",
-          "cookingMethods": [
-            "soup"
-          ],
-          "ageGroups": [
-            "4-5"
-          ],
-          "ingredients": [
-            {
-              "name": "mãn cầu",
-              "amount": "2",
-              "unit": "kg"
-            },
-            {
-              "name": "đường",
-              "amount": "2",
-              "unit": "g"
-            },
-            {
-              "name": "sữa đặt ",
-              "amount": "2",
-              "unit": "kg"
-            }
-          ]
-        }
-      }
-    },
-    {
-      "id": "74dd",
-      "date": "2025-01-20",
-      "applyFor": {
-        "type": "specific_class",
-        "studentId": "",
-        "className": "lop-mam-non",
-        "note": ""
-      },
-      "meals": {
-        "breakfast": {
-          "name": "con nuôi thịt bầm",
-          "calories": "300",
-          "protein": "10",
-          "carbs": "20",
-          "fat": "5",
-          "ageGroups": [
+            "5-6",
             "4-5",
+            "2-3",
             "3-4"
           ],
           "ingredients": [
             {
-              "name": "con nui",
-              "amount": "3",
+              "name": "yến mạch",
+              "amount": "1.25",
               "unit": "kg"
             },
             {
-              "name": "thịt bầm ",
-              "amount": "3",
-              "unit": "kg"
+              "name": "Chuối chín",
+              "amount": "25",
+              "unit": "trái"
             },
             {
-              "name": "cà rốt",
-              "amount": "2",
-              "unit": "kg"
+              "name": "mật ông",
+              "amount": "25",
+              "unit": "ml"
+            },
+            {
+              "name": "Sữa tươi không đường",
+              "amount": "5000",
+              "unit": "ml"
+            },
+            {
+              "name": "Nước lọc",
+              "amount": "2500",
+              "unit": "ml"
             }
-          ],
-          "cookingMethods": [
-            "nuoc"
-          ],
-          "iron": "4"
+          ]
         },
         "lunch": {
-          "name": "cơm chiên trứng",
-          "calories": "500",
-          "protein": "5",
-          "carbs": "20",
-          "fat": "5",
+          "name": "Cơm gạo lức ,Cá hồi áp chảo ,rau củ luộc",
+          "calories": "400",
+          "protein": "20",
+          "carbs": "50",
+          "fat": "15",
+          "fiber": "6",
+          "calcium": "100",
+          "iron": "2",
+          "vitaminA": "100",
+          "vitaminC": "10",
+          "sugar": "5",
+          "sodium": "100",
+          "cookingMethods": [
+            "ap_chao",
+            "luoc"
+          ],
           "ageGroups": [
-            "4-5"
+            "2-3",
+            "3-4",
+            "4-5",
+            "5-6"
           ],
           "ingredients": [
             {
-              "name": "gạo dẽo",
-              "amount": "4",
+              "name": "Cá hồi",
+              "amount": "2",
               "unit": "kg"
             },
             {
-              "name": "trứng gà",
-              "amount": "4",
+              "name": "Cơm gạo lức",
+              "amount": "3",
               "unit": "kg"
             },
             {
-              "name": "rau củ các loại ",
-              "amount": "4",
+              "name": "Bông cải xanh",
+              "amount": "1.25",
               "unit": "kg"
+            },
+            {
+              "name": "Cà rốt",
+              "amount": "1.25",
+              "unit": "kg"
+            },
+            {
+              "name": "Dầu ô liu",
+              "amount": "25",
+              "unit": "ml"
+            },
+            {
+              "name": "",
+              "amount": "",
+              "unit": "g"
             }
-          ],
-          "cookingMethods": [
-            "chien"
-          ],
-          "sugar": ""
+          ]
         },
         "snack": {
-          "name": "sinh tố bơ",
+          "name": "Canh rông iển với đậu hũ",
           "calories": "200",
           "protein": "15",
           "carbs": "30",
-          "fat": "10",
+          "fat": "5",
+          "fiber": "6",
+          "calcium": "100",
+          "iron": "4",
+          "vitaminA": "100",
+          "vitaminC": "10",
+          "sugar": "5",
+          "sodium": "100",
+          "cookingMethods": [
+            "soup",
+            "nuoc"
+          ],
           "ageGroups": [
-            "4-5"
+            "2-3",
+            "3-4",
+            "4-5",
+            "5-6"
           ],
           "ingredients": [
             {
-              "name": "bơ ",
-              "amount": "",
+              "name": "Rông biển khô ",
+              "amount": "1.25",
+              "unit": "kg"
+            },
+            {
+              "name": "Đậu hữu non ",
+              "amount": "2.5",
+              "unit": "kg"
+            },
+            {
+              "name": "Nước dùng xương ",
+              "amount": "5000",
+              "unit": "ml"
+            },
+            {
+              "name": "hành lá ",
+              "amount": "50",
               "unit": "g"
             },
             {
-              "name": "sửa",
-              "amount": "",
-              "unit": "g"
-            },
-            {
-              "name": "đường",
-              "amount": "",
+              "name": "Muối",
+              "amount": "3",
               "unit": "g"
             }
-          ],
-          "cookingMethods": [
-            "soup"
           ]
         }
       }
     },
     {
-      "id": "a7c4",
-      "date": "2025-01-22",
+      "id": "7b5d",
+      "date": "2025-03-26",
       "applyFor": {
-        "type": "specific_student",
-        "studentId": "1111",
+        "type": "all_class",
+        "studentId": "",
         "className": "",
         "note": ""
       },
       "meals": {
         "breakfast": {
-          "name": "bánh mì trứng",
-          "calories": "200",
-          "protein": "",
-          "carbs": "",
-          "fat": "10",
-          "fiber": "",
-          "calcium": "",
-          "iron": "4",
-          "vitaminA": "",
-          "vitaminC": "",
-          "sugar": "",
-          "sodium": "",
-          "cookingMethods": [
-            "chien"
-          ],
+          "name": "cháo thịt bầm rau củ",
+          "calories": "300",
+          "protein": "15",
+          "carbs": "40",
+          "fat": "5",
           "ageGroups": [
+            "2-3",
+            "3-4",
+            "4-5",
             "5-6"
           ],
           "ingredients": [
             {
-              "name": "bánh mì",
-              "amount": "",
-              "unit": "g"
+              "name": "gạo tẻ ",
+              "amount": "1.25",
+              "unit": "kg"
             },
             {
-              "name": "trứng gà",
-              "amount": "",
+              "name": "Nước dùng xương",
+              "amount": "2500",
+              "unit": "ml"
+            },
+            {
+              "name": "thịt heo hầm",
+              "amount": "1.25",
+              "unit": "kg"
+            },
+            {
+              "name": "cà rốt",
+              "amount": "1.25",
+              "unit": "kg"
+            },
+            {
+              "name": "bí đỏ",
+              "amount": "1.25",
+              "unit": "kg"
+            },
+            {
+              "name": "muối",
+              "amount": "3",
               "unit": "g"
             }
+          ],
+          "cookingMethods": [
+            "ham"
           ]
         },
         "lunch": {
-          "name": "cơm trắng + cá kho ",
-          "calories": "200",
-          "protein": "",
-          "carbs": "",
-          "fat": "15",
-          "fiber": "6",
-          "calcium": "",
-          "iron": "",
-          "vitaminA": "100",
-          "vitaminC": "",
-          "sugar": "",
-          "sodium": "",
-          "cookingMethods": [
-            "kho"
-          ],
+          "name": "Cơm trắng ,thịt bò xào bông cải ,canh rau ngót",
+          "calories": "500",
+          "protein": "20",
+          "carbs": "50",
+          "fat": "10",
           "ageGroups": [
+            "2-3",
+            "3-4",
+            "4-5",
             "5-6"
           ],
           "ingredients": [
             {
-              "name": "gạo ",
-              "amount": "",
-              "unit": "g"
+              "name": "gạo trắng",
+              "amount": "2.5",
+              "unit": "kg"
             },
             {
-              "name": "cá lóc",
-              "amount": "",
-              "unit": "g"
+              "name": "thịt bò",
+              "amount": "2",
+              "unit": "kg"
+            },
+            {
+              "name": "bông cải xanh",
+              "amount": "1.25",
+              "unit": "kg"
+            },
+            {
+              "name": "Rau ngót",
+              "amount": "1.25",
+              "unit": "kg"
+            },
+            {
+              "name": "dầu ô liu",
+              "amount": "25",
+              "unit": "ml"
+            },
+            {
+              "name": "nước",
+              "amount": "5000",
+              "unit": "ml"
             }
+          ],
+          "cookingMethods": [
+            "xao",
+            "nuoc"
           ]
         },
         "snack": {
-          "name": "sinh tố đu đủ",
-          "calories": "",
-          "protein": "",
-          "carbs": "",
-          "fat": "",
-          "fiber": "",
-          "calcium": "",
-          "iron": "",
-          "vitaminA": "200",
-          "vitaminC": "20",
-          "sugar": "10",
-          "sodium": "",
-          "cookingMethods": [
-            "soup"
-          ],
-          "ageGroups": [
-            "5-6"
-          ],
+          "name": "Bánh canh cá lóc",
+          "calories": "300",
+          "protein": "20",
+          "carbs": "40",
+          "fat": "5",
+          "ageGroups": [],
           "ingredients": [
             {
-              "name": "đu đủ",
-              "amount": "",
+              "name": "Cá lóc",
+              "amount": "1.25",
+              "unit": "kg"
+            },
+            {
+              "name": "Bột bánh canh",
+              "amount": "1.25",
+              "unit": "kg"
+            },
+            {
+              "name": "Nấm rơm ",
+              "amount": "1.25",
+              "unit": "kg"
+            },
+            {
+              "name": "Hành lá",
+              "amount": "500",
               "unit": "g"
             },
             {
-              "name": "sửa",
-              "amount": "",
-              "unit": "g"
+              "name": "nước dùng xương",
+              "amount": "5000",
+              "unit": "ml"
             }
-          ]
+          ],
+          "cookingMethods": [
+            "luoc",
+            "nuoc"
+          ],
+          "fiber": "4"
         }
       }
     },
     {
-      "id": "ea5d",
-      "date": "2025-01-23",
+      "id": "966d",
+      "date": "2025-03-28",
       "applyFor": {
         "type": "all_class",
         "studentId": "",
@@ -686,105 +717,64 @@
       "meals": {
         "breakfast": {
           "name": "bún rêu ",
-          "calories": "200",
-          "protein": "15",
-          "carbs": "30",
+          "calories": "",
+          "protein": "",
+          "carbs": "",
           "fat": "",
           "fiber": "",
           "calcium": "",
-          "iron": "2",
+          "iron": "",
           "vitaminA": "",
           "vitaminC": "",
-          "sugar": "10",
+          "sugar": "",
           "sodium": "",
           "cookingMethods": [
             "nuoc"
           ],
           "ageGroups": [
-            "3-4"
+            "5-6"
           ],
-          "ingredients": [
-            {
-              "name": "bún",
-              "amount": "",
-              "unit": "g"
-            },
-            {
-              "name": "rêu cua",
-              "amount": "",
-              "unit": "g"
-            },
-            {
-              "name": "rau muốn",
-              "amount": "",
-              "unit": "g"
-            }
-          ]
+          "ingredients": []
         },
         "lunch": {
-          "name": "cơm  thịt nướng",
-          "calories": "300",
-          "protein": "5",
-          "carbs": "30",
-          "fat": "5",
-          "fiber": "",
-          "calcium": "",
-          "iron": "4",
-          "vitaminA": "",
-          "vitaminC": "",
-          "sugar": "5",
-          "sodium": "",
-          "cookingMethods": [
-            "chien",
-            "nuong"
-          ],
-          "ageGroups": [
-            "4-5"
-          ],
-          "ingredients": [
-            {
-              "name": "gạo dẽo",
-              "amount": "",
-              "unit": "g"
-            },
-            {
-              "name": "thịt heo ",
-              "amount": "",
-              "unit": "g"
-            }
-          ]
-        },
-        "snack": {
-          "name": "sinh tố chuối",
+          "name": "cơm chiên thập cẩm ",
           "calories": "",
           "protein": "",
           "carbs": "",
           "fat": "",
-          "fiber": "2",
+          "fiber": "",
           "calcium": "",
           "iron": "",
-          "vitaminA": "300",
-          "vitaminC": "10",
-          "sugar": "10",
+          "vitaminA": "",
+          "vitaminC": "",
+          "sugar": "",
           "sodium": "",
           "cookingMethods": [
-            "soup"
+            "chien"
           ],
           "ageGroups": [
             "5-6"
           ],
-          "ingredients": [
-            {
-              "name": "chuối",
-              "amount": "",
-              "unit": "g"
-            },
-            {
-              "name": "sửa",
-              "amount": "",
-              "unit": "g"
-            }
-          ]
+          "ingredients": []
+        },
+        "snack": {
+          "name": "súp cua",
+          "calories": "",
+          "protein": "",
+          "carbs": "",
+          "fat": "",
+          "fiber": "",
+          "calcium": "",
+          "iron": "",
+          "vitaminA": "",
+          "vitaminC": "",
+          "sugar": "",
+          "sodium": "",
+          "cookingMethods": [],
+          "ageGroups": [
+            "5-6"
+          ],
+          "ingredients": []
         }
       }
     }
@@ -811,6 +801,28 @@
       },
       "comments": "Phù hợp với trẻ nhỏ, cần điều chỉnh cho nhóm lớn hơn",
       "suggestions": "Tăng khẩu phần cho nhóm 4-5 tuổi"
+    },
+    {
+      "id": "88d4",
+      "menuId": "7b5d",
+      "teacherId": "GV001",
+      "date": "2025-03-26",
+      "mealType": "breakfast",
+      "ratings": {
+        "taste": 5,
+        "nutrition": 5,
+        "presentation": 5,
+        "temperature": 5,
+        "portion": 5
+      },
+      "ageGroupSuitability": {
+        "2-3": true,
+        "3-4": true,
+        "4-5": true,
+        "5-6": true
+      },
+      "comments": "",
+      "suggestions": ""
     }
   ],
   "roles": [
@@ -941,12 +953,13 @@
   },
   "feedbacks": [
     {
-      "id": 1,
+      "id": "1",
       "userId": "user_id",
       "parentName": "Tên phụ huynh",
       "content": "Nội dung phản hồi",
       "createdAt": "2024-03-20T10:00:00Z",
-      "status": "pending"
+      "status": "rejected",
+      "teacherResponse": ""
     },
     {
       "id": "a407",
@@ -969,6 +982,18 @@
       "allergies": "",
       "preferences": "",
       "createdAt": "2025-02-04T15:25:21.991Z",
+      "status": "approved",
+      "teacherResponse": ""
+    },
+    {
+      "id": "3a1f",
+      "userId": "1",
+      "parentName": "Nguyễn Văn A",
+      "menuDate": "2025-01-21",
+      "content": "chưa đủ dinh dưỡng",
+      "allergies": "",
+      "preferences": "thích ăn ngọt",
+      "createdAt": "2025-03-25T02:56:30.651Z",
       "status": "approved",
       "teacherResponse": ""
     }

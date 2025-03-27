@@ -65,6 +65,7 @@ function MenuManagement() {
             }
         }
     });
+    const [selectedMeal, setSelectedMeal] = useState('breakfast');
     const [showApplyModal, setShowApplyModal] = useState(false);
     const [selectedMenuForApply, setSelectedMenuForApply] = useState(null);
     const [applyDate, setApplyDate] = useState('');
@@ -421,385 +422,384 @@ function MenuManagement() {
                     )}
                 </div>
 
-                {Object.entries(formData.meals).map(([meal, data]) => (
-                    <div key={meal} className="space-y-4 border-b pb-6 mb-6">
-                        <h3 className="font-semibold text-lg capitalize">
-                            {meal === 'breakfast' ? 'Bữa sáng' :
-                             meal === 'lunch' ? 'Bữa trưa' :
-                             meal === 'snack' ? 'Bữa phụ' : meal}
-                        </h3>
+                <div className="space-y-4 border-b pb-6 mb-6">
+                    <div className="flex justify-between items-center">
+                        <h3 className="font-semibold text-lg">Thông tin bữa ăn</h3>
+                        <select
+                            value={selectedMeal}
+                            onChange={(e) => setSelectedMeal(e.target.value)}
+                            className="border rounded px-3 py-2"
+                        >
+                            <option value="breakfast">Bữa sáng</option>
+                            <option value="lunch">Bữa trưa</option>
+                            <option value="snack">Bữa phụ</option>
+                        </select>
+                    </div>
 
-                        <div>
-                            <label className="block mb-2">Tên món</label>
-                            <input
-                                type="text"
-                                value={data.name}
-                                onChange={(e) => setFormData({
+                    <div>
+                        <label className="block mb-2">Tên món</label>
+                        <input
+                            type="text"
+                            value={formData.meals[selectedMeal].name}
+                            onChange={(e) => setFormData({
+                                ...formData,
+                                meals: {
+                                    ...formData.meals,
+                                    [selectedMeal]: { ...formData.meals[selectedMeal], name: e.target.value }
+                                }
+                            })}
+                            className="w-full border rounded px-3 py-2"
+                            required
+                        />
+                    </div>
+
+                    <div>
+                        <label className="block mb-2">Cách chế biến</label>
+                        <select
+                            value={formData.meals[selectedMeal].cookingMethods?.[0] || ''}
+                            onChange={(e) => {
+                                const newMethod = e.target.value;
+                                setFormData({
                                     ...formData,
                                     meals: {
                                         ...formData.meals,
-                                        [meal]: { ...data, name: e.target.value }
+                                        [selectedMeal]: { 
+                                            ...formData.meals[selectedMeal], 
+                                            cookingMethods: newMethod ? [newMethod] : [] 
+                                        }
                                     }
-                                })}
-                                className="w-full border rounded px-3 py-2"
-                                required
-                            />
-                        </div>
+                                });
+                            }}
+                            className="w-full border rounded px-3 py-2"
+                        >
+                            <option value="">-- Chọn cách chế biến --</option>
+                            <option value="xao">Xào</option>
+                            <option value="luoc">Luộc</option>
+                            <option value="hap">Hấp</option>
+                            <option value="chien">Chiên</option>
+                            <option value="nuong">Nướng</option>
+                            <option value="kho">Kho</option>
+                            <option value="ham">Hầm</option>
+                            <option value="soup">Súp</option>
+                            <option value="nuoc">Món nước</option>
+                            <option value="rang">Rang</option>
+                            <option value="muoi">Muối</option>
+                            <option value="uop">Ướp</option>
+                            <option value="ap_chao">Áp chảo</option>
+                        </select>
+                    </div>
 
-                        <div>
-                            <label className="block mb-2">Cách chế biến</label>
-                            <div className="grid grid-cols-2 md:grid-cols-3 gap-2">
-                                {[
-                                    { value: 'xao', label: 'Xào' },
-                                    { value: 'luoc', label: 'Luộc' },
-                                    { value: 'hap', label: 'Hấp' },
-                                    { value: 'chien', label: 'Chiên' },
-                                    { value: 'nuong', label: 'Nướng' },
-                                    { value: 'kho', label: 'Kho' },
-                                    { value: 'ham', label: 'Hầm' },
-                                    { value: 'soup', label: 'Súp' },
-                                    { value: 'nuoc', label: 'Món nước' },
-                                    { value: 'rang', label: 'Rang' },
-                                    { value: 'muoi', label: 'Muối' },
-                                    { value: 'uop', label: 'Ướp' },
-                                    { value: 'ap_chao', label: 'Áp chảo' }
-                                ].map(method => (
-                                    <label key={method.value} className="flex items-center space-x-2">
-                                        <input
-                                            type="checkbox"
-                                            checked={data.cookingMethods?.includes(method.value)}
-                                            onChange={(e) => {
-                                                const newMethods = e.target.checked
-                                                    ? [...(data.cookingMethods || []), method.value]
-                                                    : (data.cookingMethods || []).filter(m => m !== method.value);
-                                                setFormData({
-                                                    ...formData,
-                                                    meals: {
-                                                        ...formData.meals,
-                                                        [meal]: { ...data, cookingMethods: newMethods }
-                                                    }
-                                                });
-                                            }}
-                                            className="rounded"
-                                        />
-                                        <span>{method.label}</span>
-                                    </label>
-                                ))}
+                    <div className="space-y-4">
+                        <label className="block mb-2">Nguyên liệu</label>
+                        {formData.meals[selectedMeal].ingredients.map((ingredient, index) => (
+                            <div key={index} className="flex items-center space-x-4">
+                                <input
+                                    type="text"
+                                    placeholder="Tên nguyên liệu"
+                                    value={ingredient.name}
+                                    onChange={(e) => updateIngredient(selectedMeal, index, 'name', e.target.value)}
+                                    className="flex-1 border rounded px-3 py-2"
+                                />
+                                <input
+                                    type="number"
+                                    placeholder="Số lượng"
+                                    value={ingredient.amount}
+                                    onChange={(e) => updateIngredient(selectedMeal, index, 'amount', e.target.value)}
+                                    className="w-24 border rounded px-3 py-2"
+                                />
+                                <select
+                                    value={ingredient.unit}
+                                    onChange={(e) => updateIngredient(selectedMeal, index, 'unit', e.target.value)}
+                                    className="w-24 border rounded px-3 py-2"
+                                >
+                                    <option value="g">g</option>
+                                    <option value="kg">kg</option>
+                                    <option value="ml">ml</option>
+                                    <option value="cái">cái</option>
+                                    <option value="trái">trái</option>
+                                </select>
+                                <button
+                                    type="button"
+                                    onClick={() => removeIngredient(selectedMeal, index)}
+                                    className="text-red-600 hover:text-red-800"
+                                >
+                                    Xóa
+                                </button>
                             </div>
-                        </div>
+                        ))}
+                        <button
+                            type="button"
+                            onClick={() => addIngredient(selectedMeal)}
+                            className="text-blue-600 hover:text-blue-800"
+                        >
+                            + Thêm nguyên liệu
+                        </button>
+                    </div>
 
-                        <div className="space-y-4">
-                            <label className="block mb-2">Nguyên liệu</label>
-                            {data.ingredients.map((ingredient, index) => (
-                                <div key={index} className="flex items-center space-x-4">
-                                    <input
-                                        type="text"
-                                        placeholder="Tên nguyên liệu"
-                                        value={ingredient.name}
-                                        onChange={(e) => updateIngredient(meal, index, 'name', e.target.value)}
-                                        className="flex-1 border rounded px-3 py-2"
-                                    />
-                                    <input
-                                        type="number"
-                                        placeholder="Số lượng"
-                                        value={ingredient.amount}
-                                        onChange={(e) => updateIngredient(meal, index, 'amount', e.target.value)}
-                                        className="w-24 border rounded px-3 py-2"
-                                    />
-                                    <select
-                                        value={ingredient.unit}
-                                        onChange={(e) => updateIngredient(meal, index, 'unit', e.target.value)}
-                                        className="w-24 border rounded px-3 py-2"
-                                    >
-                                        <option value="g">g</option>
-                                        <option value="kg">kg</option>
-                                        <option value="ml">ml</option>
-                                        <option value="cái">cái</option>
-                                        <option value="trái">trái</option>
-                                    </select>
-                                    <button
-                                        type="button"
-                                        onClick={() => removeIngredient(meal, index)}
-                                        className="text-red-600 hover:text-red-800"
-                                    >
-                                        Xóa
-                                    </button>
-                                </div>
-                            ))}
-                            <button
-                                type="button"
-                                onClick={() => addIngredient(meal)}
-                                className="text-blue-600 hover:text-blue-800"
-                            >
-                                + Thêm nguyên liệu
-                            </button>
-                        </div>
-
-                        <div className="space-y-4">
-                            <label className="block font-medium text-gray-700">Thông tin dinh dưỡng</label>
-                            <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-                                <div>
-                                    <label className="block mb-2">Năng lượng (kcal)</label>
-                                    <select
-                                        value={data.calories}
-                                        onChange={(e) => setFormData({
-                                            ...formData,
-                                            meals: {
-                                                ...formData.meals,
-                                                [meal]: { ...data, calories: e.target.value }
-                                            }
-                                        })}
-                                        className="w-full border rounded px-3 py-2"
-                                    >
-                                        <option value="">Không</option>
-                                        <option value="200">200 kcal</option>
-                                        <option value="300">300 kcal</option>
-                                        <option value="400">400 kcal</option>
-                                        <option value="500">500 kcal</option>
-                                    </select>
-                                </div>
-
-                                <div>
-                                    <label className="block mb-2">Chất đạm (g)</label>
-                                    <select
-                                        value={data.protein}
-                                        onChange={(e) => setFormData({
-                                            ...formData,
-                                            meals: {
-                                                ...formData.meals,
-                                                [meal]: { ...data, protein: e.target.value }
-                                            }
-                                        })}
-                                        className="w-full border rounded px-3 py-2"
-                                    >
-                                        <option value="">Không</option>
-                                        <option value="5">5g</option>
-                                        <option value="10">10g</option>
-                                        <option value="15">15g</option>
-                                        <option value="20">20g</option>
-                                    </select>
-                                </div>
-
-                                <div>
-                                    <label className="block mb-2">Tinh bột (g)</label>
-                                    <select
-                                        value={data.carbs}
-                                        onChange={(e) => setFormData({
-                                            ...formData,
-                                            meals: {
-                                                ...formData.meals,
-                                                [meal]: { ...data, carbs: e.target.value }
-                                            }
-                                        })}
-                                        className="w-full border rounded px-3 py-2"
-                                    >
-                                        <option value="">Không</option>
-                                        <option value="20">20g</option>
-                                        <option value="30">30g</option>
-                                        <option value="40">40g</option>
-                                        <option value="50">50g</option>
-                                    </select>
-                                </div>
-
-                                <div>
-                                    <label className="block mb-2">Chất béo (g)</label>
-                                    <select
-                                        value={data.fat}
-                                        onChange={(e) => setFormData({
-                                            ...formData,
-                                            meals: {
-                                                ...formData.meals,
-                                                [meal]: { ...data, fat: e.target.value }
-                                            }
-                                        })}
-                                        className="w-full border rounded px-3 py-2"
-                                    >
-                                        <option value="">Không</option>
-                                        <option value="5">5g</option>
-                                        <option value="10">10g</option>
-                                        <option value="15">15g</option>
-                                        <option value="20">20g</option>
-                                    </select>
-                                </div>
-
-                                <div>
-                                    <label className="block mb-2">Chất xơ (g)</label>
-                                    <select
-                                        value={data.fiber}
-                                        onChange={(e) => setFormData({
-                                            ...formData,
-                                            meals: {
-                                                ...formData.meals,
-                                                [meal]: { ...data, fiber: e.target.value }
-                                            }
-                                        })}
-                                        className="w-full border rounded px-3 py-2"
-                                    >
-                                        <option value="">Không</option>
-                                        <option value="2">2g</option>
-                                        <option value="4">4g</option>
-                                        <option value="6">6g</option>
-                                        <option value="8">8g</option>
-                                    </select>
-                                </div>
-
-                                <div>
-                                    <label className="block mb-2">Đường (g)</label>
-                                    <select
-                                        value={data.sugar}
-                                        onChange={(e) => setFormData({
-                                            ...formData,
-                                            meals: {
-                                                ...formData.meals,
-                                                [meal]: { ...data, sugar: e.target.value }
-                                            }
-                                        })}
-                                        className="w-full border rounded px-3 py-2"
-                                    >
-                                        <option value="">Không</option>
-                                        <option value="5">5g</option>
-                                        <option value="10">10g</option>
-                                        <option value="15">15g</option>
-                                        <option value="20">20g</option>
-                                    </select>
-                                </div>
-
-                                <div>
-                                    <label className="block mb-2">Canxi (mg)</label>
-                                    <select
-                                        value={data.calcium}
-                                        onChange={(e) => setFormData({
-                                            ...formData,
-                                            meals: {
-                                                ...formData.meals,
-                                                [meal]: { ...data, calcium: e.target.value }
-                                            }
-                                        })}
-                                        className="w-full border rounded px-3 py-2"
-                                    >
-                                        <option value="">Không</option>
-                                        <option value="100">100mg</option>
-                                        <option value="200">200mg</option>
-                                        <option value="300">300mg</option>
-                                        <option value="400">400mg</option>
-                                    </select>
-                                </div>
-
-                                <div>
-                                    <label className="block mb-2">Sắt (mg)</label>
-                                    <select
-                                        value={data.iron}
-                                        onChange={(e) => setFormData({
-                                            ...formData,
-                                            meals: {
-                                                ...formData.meals,
-                                                [meal]: { ...data, iron: e.target.value }
-                                            }
-                                        })}
-                                        className="w-full border rounded px-3 py-2"
-                                    >
-                                        <option value="">Không</option>
-                                        <option value="2">2mg</option>
-                                        <option value="4">4mg</option>
-                                        <option value="6">6mg</option>
-                                        <option value="8">8mg</option>
-                                    </select>
-                                </div>
-
-                                <div>
-                                    <label className="block mb-2">Vitamin A (mcg)</label>
-                                    <select
-                                        value={data.vitaminA}
-                                        onChange={(e) => setFormData({
-                                            ...formData,
-                                            meals: {
-                                                ...formData.meals,
-                                                [meal]: { ...data, vitaminA: e.target.value }
-                                            }
-                                        })}
-                                        className="w-full border rounded px-3 py-2"
-                                    >
-                                        <option value="">Không</option>
-                                        <option value="100">100mcg</option>
-                                        <option value="200">200mcg</option>
-                                        <option value="300">300mcg</option>
-                                        <option value="400">400mcg</option>
-                                    </select>
-                                </div>
-
-                                <div>
-                                    <label className="block mb-2">Vitamin C (mg)</label>
-                                    <select
-                                        value={data.vitaminC}
-                                        onChange={(e) => setFormData({
-                                            ...formData,
-                                            meals: {
-                                                ...formData.meals,
-                                                [meal]: { ...data, vitaminC: e.target.value }
-                                            }
-                                        })}
-                                        className="w-full border rounded px-3 py-2"
-                                    >
-                                        <option value="">Không</option>
-                                        <option value="10">10mg</option>
-                                        <option value="20">20mg</option>
-                                        <option value="30">30mg</option>
-                                        <option value="40">40mg</option>
-                                    </select>
-                                </div>
-
-                                <div>
-                                    <label className="block mb-2">Natri (mg)</label>
-                                    <select
-                                        value={data.sodium}
-                                        onChange={(e) => setFormData({
-                                            ...formData,
-                                            meals: {
-                                                ...formData.meals,
-                                                [meal]: { ...data, sodium: e.target.value }
-                                            }
-                                        })}
-                                        className="w-full border rounded px-3 py-2"
-                                    >
-                                        <option value="">Không</option>
-                                        <option value="100">100mg</option>
-                                        <option value="200">200mg</option>
-                                        <option value="300">300mg</option>
-                                        <option value="400">400mg</option>
-                                    </select>
-                                </div>
+                    <div className="space-y-4">
+                        <label className="block font-medium text-gray-700">Thông tin dinh dưỡng</label>
+                        <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                            <div>
+                                <label className="block mb-2">Năng lượng (kcal)</label>
+                                <select
+                                    value={formData.meals[selectedMeal].calories}
+                                    onChange={(e) => setFormData({
+                                        ...formData,
+                                        meals: {
+                                            ...formData.meals,
+                                            [selectedMeal]: { ...formData.meals[selectedMeal], calories: e.target.value }
+                                        }
+                                    })}
+                                    className="w-full border rounded px-3 py-2"
+                                >
+                                    <option value="">Không</option>
+                                    <option value="200">200 kcal</option>
+                                    <option value="300">300 kcal</option>
+                                    <option value="400">400 kcal</option>
+                                    <option value="500">500 kcal</option>
+                                </select>
                             </div>
-                        </div>
 
-                        <div>
-                            <label className="block mb-2">Độ tuổi phù hợp</label>
-                            <div className="space-y-2">
-                                {['2-3', '3-4', '4-5', '5-6'].map(age => (
-                                    <label key={age} className="flex items-center">
-                                        <input
-                                            type="checkbox"
-                                            checked={data.ageGroups.includes(age)}
-                                            onChange={(e) => {
-                                                const newAgeGroups = e.target.checked
-                                                    ? [...data.ageGroups, age]
-                                                    : data.ageGroups.filter(g => g !== age);
-                                                setFormData({
-                                                    ...formData,
-                                                    meals: {
-                                                        ...formData.meals,
-                                                        [meal]: { ...data, ageGroups: newAgeGroups }
-                                                    }
-                                                });
-                                            }}
-                                            className="mr-2"
-                                        />
-                                        {age} tuổi
-                                    </label>
-                                ))}
+                            <div>
+                                <label className="block mb-2">Chất đạm (g)</label>
+                                <select
+                                    value={formData.meals[selectedMeal].protein}
+                                    onChange={(e) => setFormData({
+                                        ...formData,
+                                        meals: {
+                                            ...formData.meals,
+                                            [selectedMeal]: { ...formData.meals[selectedMeal], protein: e.target.value }
+                                        }
+                                    })}
+                                    className="w-full border rounded px-3 py-2"
+                                >
+                                    <option value="">Không</option>
+                                    <option value="5">5g</option>
+                                    <option value="10">10g</option>
+                                    <option value="15">15g</option>
+                                    <option value="20">20g</option>
+                                </select>
+                            </div>
+
+                            <div>
+                                <label className="block mb-2">Tinh bột (g)</label>
+                                <select
+                                    value={formData.meals[selectedMeal].carbs}
+                                    onChange={(e) => setFormData({
+                                        ...formData,
+                                        meals: {
+                                            ...formData.meals,
+                                            [selectedMeal]: { ...formData.meals[selectedMeal], carbs: e.target.value }
+                                        }
+                                    })}
+                                    className="w-full border rounded px-3 py-2"
+                                >
+                                    <option value="">Không</option>
+                                    <option value="20">20g</option>
+                                    <option value="30">30g</option>
+                                    <option value="40">40g</option>
+                                    <option value="50">50g</option>
+                                </select>
+                            </div>
+
+                            <div>
+                                <label className="block mb-2">Chất béo (g)</label>
+                                <select
+                                    value={formData.meals[selectedMeal].fat}
+                                    onChange={(e) => setFormData({
+                                        ...formData,
+                                        meals: {
+                                            ...formData.meals,
+                                            [selectedMeal]: { ...formData.meals[selectedMeal], fat: e.target.value }
+                                        }
+                                    })}
+                                    className="w-full border rounded px-3 py-2"
+                                >
+                                    <option value="">Không</option>
+                                    <option value="5">5g</option>
+                                    <option value="10">10g</option>
+                                    <option value="15">15g</option>
+                                    <option value="20">20g</option>
+                                </select>
+                            </div>
+
+                            <div>
+                                <label className="block mb-2">Chất xơ (g)</label>
+                                <select
+                                    value={formData.meals[selectedMeal].fiber}
+                                    onChange={(e) => setFormData({
+                                        ...formData,
+                                        meals: {
+                                            ...formData.meals,
+                                            [selectedMeal]: { ...formData.meals[selectedMeal], fiber: e.target.value }
+                                        }
+                                    })}
+                                    className="w-full border rounded px-3 py-2"
+                                >
+                                    <option value="">Không</option>
+                                    <option value="2">2g</option>
+                                    <option value="4">4g</option>
+                                    <option value="6">6g</option>
+                                    <option value="8">8g</option>
+                                </select>
+                            </div>
+
+                            <div>
+                                <label className="block mb-2">Đường (g)</label>
+                                <select
+                                    value={formData.meals[selectedMeal].sugar}
+                                    onChange={(e) => setFormData({
+                                        ...formData,
+                                        meals: {
+                                            ...formData.meals,
+                                            [selectedMeal]: { ...formData.meals[selectedMeal], sugar: e.target.value }
+                                        }
+                                    })}
+                                    className="w-full border rounded px-3 py-2"
+                                >
+                                    <option value="">Không</option>
+                                    <option value="5">5g</option>
+                                    <option value="10">10g</option>
+                                    <option value="15">15g</option>
+                                    <option value="20">20g</option>
+                                </select>
+                            </div>
+
+                            <div>
+                                <label className="block mb-2">Canxi (mg)</label>
+                                <select
+                                    value={formData.meals[selectedMeal].calcium}
+                                    onChange={(e) => setFormData({
+                                        ...formData,
+                                        meals: {
+                                            ...formData.meals,
+                                            [selectedMeal]: { ...formData.meals[selectedMeal], calcium: e.target.value }
+                                        }
+                                    })}
+                                    className="w-full border rounded px-3 py-2"
+                                >
+                                    <option value="">Không</option>
+                                    <option value="100">100mg</option>
+                                    <option value="200">200mg</option>
+                                    <option value="300">300mg</option>
+                                    <option value="400">400mg</option>
+                                </select>
+                            </div>
+
+                            <div>
+                                <label className="block mb-2">Sắt (mg)</label>
+                                <select
+                                    value={formData.meals[selectedMeal].iron}
+                                    onChange={(e) => setFormData({
+                                        ...formData,
+                                        meals: {
+                                            ...formData.meals,
+                                            [selectedMeal]: { ...formData.meals[selectedMeal], iron: e.target.value }
+                                        }
+                                    })}
+                                    className="w-full border rounded px-3 py-2"
+                                >
+                                    <option value="">Không</option>
+                                    <option value="2">2mg</option>
+                                    <option value="4">4mg</option>
+                                    <option value="6">6mg</option>
+                                    <option value="8">8mg</option>
+                                </select>
+                            </div>
+
+                            <div>
+                                <label className="block mb-2">Vitamin A (mcg)</label>
+                                <select
+                                    value={formData.meals[selectedMeal].vitaminA}
+                                    onChange={(e) => setFormData({
+                                        ...formData,
+                                        meals: {
+                                            ...formData.meals,
+                                            [selectedMeal]: { ...formData.meals[selectedMeal], vitaminA: e.target.value }
+                                        }
+                                    })}
+                                    className="w-full border rounded px-3 py-2"
+                                >
+                                    <option value="">Không</option>
+                                    <option value="100">100mcg</option>
+                                    <option value="200">200mcg</option>
+                                    <option value="300">300mcg</option>
+                                    <option value="400">400mcg</option>
+                                </select>
+                            </div>
+
+                            <div>
+                                <label className="block mb-2">Vitamin C (mg)</label>
+                                <select
+                                    value={formData.meals[selectedMeal].vitaminC}
+                                    onChange={(e) => setFormData({
+                                        ...formData,
+                                        meals: {
+                                            ...formData.meals,
+                                            [selectedMeal]: { ...formData.meals[selectedMeal], vitaminC: e.target.value }
+                                        }
+                                    })}
+                                    className="w-full border rounded px-3 py-2"
+                                >
+                                    <option value="">Không</option>
+                                    <option value="10">10mg</option>
+                                    <option value="20">20mg</option>
+                                    <option value="30">30mg</option>
+                                    <option value="40">40mg</option>
+                                </select>
+                            </div>
+
+                            <div>
+                                <label className="block mb-2">Natri (mg)</label>
+                                <select
+                                    value={formData.meals[selectedMeal].sodium}
+                                    onChange={(e) => setFormData({
+                                        ...formData,
+                                        meals: {
+                                            ...formData.meals,
+                                            [selectedMeal]: { ...formData.meals[selectedMeal], sodium: e.target.value }
+                                        }
+                                    })}
+                                    className="w-full border rounded px-3 py-2"
+                                >
+                                    <option value="">Không</option>
+                                    <option value="100">100mg</option>
+                                    <option value="200">200mg</option>
+                                    <option value="300">300mg</option>
+                                    <option value="400">400mg</option>
+                                </select>
                             </div>
                         </div>
                     </div>
-                ))}
+
+                    <div>
+                        <label className="block mb-2">Độ tuổi phù hợp</label>
+                        <div className="space-y-2">
+                            {['2-3', '3-4', '4-5', '5-6'].map(age => (
+                                <label key={age} className="flex items-center">
+                                    <input
+                                        type="checkbox"
+                                        checked={formData.meals[selectedMeal].ageGroups.includes(age)}
+                                        onChange={(e) => {
+                                            const newAgeGroups = e.target.checked
+                                                ? [...formData.meals[selectedMeal].ageGroups, age]
+                                                : formData.meals[selectedMeal].ageGroups.filter(g => g !== age);
+                                            setFormData({
+                                                ...formData,
+                                                meals: {
+                                                    ...formData.meals,
+                                                    [selectedMeal]: { ...formData.meals[selectedMeal], ageGroups: newAgeGroups }
+                                                }
+                                            });
+                                        }}
+                                        className="mr-2"
+                                    />
+                                    {age} tuổi
+                                </label>
+                            ))}
+                        </div>
+                    </div>
+                </div>
 
                 <div className="flex justify-end space-x-4">
                     <button
@@ -919,11 +919,28 @@ function MenuManagement() {
                                                 <div className="bg-white p-3 rounded-md border border-gray-100">
                                                     <p className="text-sm text-gray-500 mb-2">Cách chế biến:</p>
                                                     <div className="flex flex-wrap gap-2">
-                                                        {data.cookingMethods.map(method => (
-                                                            <span key={method} className="px-2 py-1 bg-teal-50 text-teal-700 rounded-full text-sm">
-                                                                {method}
-                                                            </span>
-                                                        ))}
+                                                        {data.cookingMethods.map(method => {
+                                                            const methodName = 
+                                                                method === 'xao' ? 'Xào' :
+                                                                method === 'luoc' ? 'Luộc' :
+                                                                method === 'hap' ? 'Hấp' :
+                                                                method === 'chien' ? 'Chiên' :
+                                                                method === 'nuong' ? 'Nướng' :
+                                                                method === 'kho' ? 'Kho' :
+                                                                method === 'ham' ? 'Hầm' :
+                                                                method === 'soup' ? 'Súp' :
+                                                                method === 'nuoc' ? 'Món nước' :
+                                                                method === 'rang' ? 'Rang' :
+                                                                method === 'muoi' ? 'Muối' :
+                                                                method === 'uop' ? 'Ướp' :
+                                                                method === 'ap_chao' ? 'Áp chảo' : method;
+                                                            
+                                                            return (
+                                                                <span key={method} className="px-2 py-1 bg-teal-50 text-teal-700 rounded-full text-sm">
+                                                                    {methodName}
+                                                                </span>
+                                                            );
+                                                        })}
                                                     </div>
                                                 </div>
                                             )}
