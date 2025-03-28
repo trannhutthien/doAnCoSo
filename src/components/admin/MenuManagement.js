@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { toast } from 'react-hot-toast';
+import { Document, Packer, Paragraph, TextRun, Table, TableRow, TableCell, BorderStyle, AlignmentType, HeadingLevel, Header } from 'docx';
+import { saveAs } from 'file-saver';
 
 function MenuManagement() {
     const [menus, setMenus] = useState([]);
@@ -348,6 +350,149 @@ function MenuManagement() {
         }
     };
 
+    const exportToWord = (menu) => {
+        try {
+            // Tạo HTML content
+            let htmlContent = `
+                <html xmlns:o='urn:schemas-microsoft-com:office:office' xmlns:w='urn:schemas-microsoft-com:office:word' xmlns='http://www.w3.org/TR/REC-html40'>
+                <head>
+                    <meta charset='utf-8'>
+                    <title>Thực đơn ngày ${menu.date}</title>
+                    <style>
+                        body { font-family: 'Arial', sans-serif; }
+                        h1, h2, h3 { color: #2E74B5; }
+                        h1 { font-size: 20pt; text-align: center; margin-bottom: 10px; }
+                        h2 { font-size: 16pt; margin-top: 20px; margin-bottom: 5px; }
+                        h3 { font-size: 12pt; margin-top: 10px; margin-bottom: 5px; }
+                        p { margin: 5px 0; }
+                        .apply-info { text-align: center; margin-bottom: 20px; }
+                        .note { font-style: italic; margin-bottom: 20px; }
+                        .section { margin-bottom: 20px; }
+                        table { width: 100%; border-collapse: collapse; margin-top: 10px; }
+                        table, th, td { border: 1px solid #ddd; }
+                        th, td { padding: 8px; text-align: left; }
+                        th { background-color: #f2f2f2; }
+                        .ingredient { margin-left: 20px; }
+                    </style>
+                </head>
+                <body>
+                    <h1>THỰC ĐƠN NGÀY ${new Date(menu.date).toLocaleDateString('vi-VN')}</h1>
+                    <div class='apply-info'>
+                        <p><strong>${
+                            menu.applyFor.type === 'all_class' ? 'Áp dụng cho: Tất cả các lớp' :
+                            menu.applyFor.type === 'specific_class' ? `Áp dụng cho: Lớp ${menu.applyFor.className}` :
+                            menu.applyFor.type === 'specific_student' ? `Áp dụng cho: Học sinh ${menu.applyFor.studentId}` :
+                            menu.applyFor.type === 'special_diet' ? 'Áp dụng cho: Chế độ ăn đặc biệt' : 'Áp dụng cho: Sự kiện đặc biệt'
+                        }</strong></p>
+                        ${menu.applyFor.note ? `<p class='note'>Ghi chú: ${menu.applyFor.note}</p>` : ''}
+                    </div>
+            `;
+
+            // Duyệt qua các bữa ăn
+            Object.entries(menu.meals).forEach(([mealType, mealData]) => {
+                if (!mealData || Object.keys(mealData).length === 0) return;
+
+                const mealTitle = mealType === 'breakfast' ? 'BỮA SÁNG' :
+                                  mealType === 'lunch' ? 'BỮA TRƯA' : 'BỮA PHỤ';
+                
+                htmlContent += `
+                    <div class='section'>
+                        <h2>${mealTitle}</h2>
+                        <p><strong>Món:</strong> ${mealData.name || ''}</p>
+                `;
+
+                // Cách chế biến
+                if (mealData.cookingMethods?.length > 0) {
+                    const methodNames = mealData.cookingMethods.map(method => (
+                        method === 'xao' ? 'Xào' :
+                        method === 'luoc' ? 'Luộc' :
+                        method === 'hap' ? 'Hấp' :
+                        method === 'nuong' ? 'Nướng' :
+                        method === 'chien' ? 'Chiên' :
+                        method === 'kho' ? 'Kho' :
+                        method === 'ham' ? 'Hầm' :
+                        method === 'soup' ? 'Súp' :
+                        method === 'nuoc' ? 'Món nước' :
+                        method === 'rang' ? 'Rang' :
+                        method === 'muoi' ? 'Muối' :
+                        method === 'uop' ? 'Ướp' :
+                        method === 'ap_chao' ? 'Áp chảo' : method
+                    )).join(', ');
+                    
+                    htmlContent += `<p><strong>Cách chế biến:</strong> ${methodNames}</p>`;
+                }
+
+                // Độ tuổi
+                if (mealData.ageGroups?.length > 0) {
+                    const ageText = mealData.ageGroups.map(age => `${age} tuổi`).join(', ');
+                    htmlContent += `<p><strong>Độ tuổi phù hợp:</strong> ${ageText}</p>`;
+                }
+
+                // Nguyên liệu
+                if (mealData.ingredients?.length > 0) {
+                    htmlContent += `<h3>Nguyên liệu:</h3>`;
+                    
+                    mealData.ingredients.forEach(ing => {
+                        htmlContent += `<p class='ingredient'>- ${ing.name}: ${ing.amount} ${ing.unit}</p>`;
+                    });
+                }
+
+                // Thông tin dinh dưỡng
+                const hasNutrients = mealData.calories || mealData.protein || mealData.carbs || 
+                                    mealData.fat || mealData.fiber || mealData.calcium || 
+                                    mealData.iron || mealData.vitaminA || mealData.vitaminC || 
+                                    mealData.sugar || mealData.sodium;
+                
+                if (hasNutrients) {
+                    htmlContent += `<h3>Thông tin dinh dưỡng:</h3>`;
+                    htmlContent += `<table>
+                        <tr>
+                            <th>Thành phần</th>
+                            <th>Giá trị</th>
+                        </tr>
+                    `;
+                    
+                    [
+                        { label: 'Năng lượng', value: mealData.calories, unit: 'kcal' },
+                        { label: 'Chất đạm', value: mealData.protein, unit: 'g' },
+                        { label: 'Tinh bột', value: mealData.carbs, unit: 'g' },
+                        { label: 'Chất béo', value: mealData.fat, unit: 'g' },
+                        { label: 'Chất xơ', value: mealData.fiber, unit: 'g' },
+                        { label: 'Đường', value: mealData.sugar, unit: 'g' },
+                        { label: 'Canxi', value: mealData.calcium, unit: 'mg' },
+                        { label: 'Sắt', value: mealData.iron, unit: 'mg' },
+                        { label: 'Vitamin A', value: mealData.vitaminA, unit: 'mcg' },
+                        { label: 'Vitamin C', value: mealData.vitaminC, unit: 'mg' },
+                        { label: 'Natri', value: mealData.sodium, unit: 'mg' }
+                    ].forEach(nutrient => {
+                        if (nutrient.value) {
+                            htmlContent += `
+                                <tr>
+                                    <td>${nutrient.label}</td>
+                                    <td>${nutrient.value} ${nutrient.unit}</td>
+                                </tr>
+                            `;
+                        }
+                    });
+                    
+                    htmlContent += `</table>`;
+                }
+                
+                htmlContent += `</div>`;
+            });
+            
+            htmlContent += `</body></html>`;
+            
+            // Tạo Blob và tải xuống
+            const blob = new Blob([htmlContent], { type: 'application/msword;charset=utf-8' });
+            saveAs(blob, `Thuc_don_ngay_${menu.date.replace(/-/g, '_')}.doc`);
+            toast.success("Đã xuất thực đơn thành file Word");
+        } catch (error) {
+            console.error("Lỗi khi xuất file Word:", error);
+            toast.error("Có lỗi khi xuất file Word");
+        }
+    };
+
     return (
         <div className="container mx-auto px-4 py-8">
             <div className="mb-8">
@@ -381,23 +526,48 @@ function MenuManagement() {
 
                 {/* Hiển thị thực đơn của ngày được chọn */}
                 {selectedDate && filteredMenus.length > 0 && (
-                    <div className="bg-white rounded-lg shadow p-4 mb-6">
-                        <h3 className="text-lg font-semibold mb-4">Thực đơn ngày {new Date(selectedDate).toLocaleDateString('vi-VN')}</h3>
+                    <div className="bg-white rounded-lg shadow p-6 mb-6">
+                        <div className="flex justify-between items-center mb-6">
+                            <h3 className="text-xl font-semibold text-blue-700 border-b pb-2">Thực đơn ngày {new Date(selectedDate).toLocaleDateString('vi-VN')}</h3>
+                            <button
+                                onClick={() => {
+                                    if (filteredMenus.length > 1) {
+                                        toast.info("Có nhiều thực đơn cho ngày này. Mỗi thực đơn sẽ được xuất riêng.");
+                                    }
+                                    filteredMenus.forEach(menu => exportToWord(menu));
+                                }}
+                                className="px-4 py-2 bg-purple-100 text-purple-700 rounded-lg hover:bg-purple-200 transition-colors flex items-center gap-2"
+                            >
+                                <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" />
+                                </svg>
+                                Xuất Word
+                            </button>
+                        </div>
                         {filteredMenus.map(menu => (
-                            <div key={menu.id} className="border rounded-lg p-4 mb-4">
-                                <div className="flex justify-between items-start mb-4">
+                            <div key={menu.id} className="border border-gray-200 rounded-lg p-6 mb-6 hover:border-blue-300 transition-all shadow-sm">
+                                <div className="flex justify-between items-start mb-6">
                                     <div>
-                                        <h4 className="font-medium mb-2">Áp dụng cho: {
+                                        <h4 className="font-semibold text-lg mb-2">Áp dụng cho: {
                                             menu.applyFor.type === 'all_class' ? 'Tất cả lớp' :
-                                            menu.applyFor.type === 'class' ? `Lớp ${menu.applyFor.className}` :
-                                            `Học sinh ${menu.applyFor.studentId}`
+                                            menu.applyFor.type === 'specific_class' ? `Lớp ${menu.applyFor.className}` :
+                                            menu.applyFor.type === 'specific_student' ? `Học sinh ${menu.applyFor.studentId}` :
+                                            menu.applyFor.type === 'special_diet' ? 'Chế độ ăn đặc biệt' : 'Sự kiện đặc biệt'
                                         }</h4>
                                         {menu.applyFor.note && (
-                                            <p className="text-gray-600">Ghi chú: {menu.applyFor.note}</p>
+                                            <p className="text-gray-700 bg-gray-50 p-3 rounded-md border border-gray-100">
+                                                <span className="font-medium">Ghi chú:</span> {menu.applyFor.note}
+                                            </p>
                                         )}
                                     </div>
-                                    <div className="flex gap-2">
-                        <button
+                                    <div className="flex gap-3">
+                                        <button
+                                            onClick={() => exportToWord(menu)}
+                                            className="px-4 py-2 bg-purple-100 text-purple-700 rounded-lg hover:bg-purple-200 transition-colors"
+                                        >
+                                            Xuất Word
+                                        </button>
+                                        <button
                                             onClick={() => {
                                                 setSelectedMenu(menu);
                                                 setFormData({
@@ -409,60 +579,195 @@ function MenuManagement() {
                                                     menu.meals[key] && Object.keys(menu.meals[key]).length > 0
                                                 ));
                                             }}
-                                            className="px-3 py-1 text-blue-600 hover:bg-blue-50 rounded"
+                                            className="px-4 py-2 bg-blue-100 text-blue-700 rounded-lg hover:bg-blue-200 transition-colors"
                                         >
-                                            Sửa
-                        </button>
+                                            Sửa thực đơn
+                                        </button>
                                         <button
                                             onClick={() => handleDeleteMenu(menu.id)}
-                                            className="px-3 py-1 text-red-600 hover:bg-red-50 rounded"
+                                            className="px-4 py-2 bg-red-100 text-red-700 rounded-lg hover:bg-red-200 transition-colors"
                                         >
-                                            Xóa
+                                            Xóa thực đơn
+                                        </button>
+                                        <button
+                                            onClick={() => {
+                                                setSelectedMenuForApply(menu);
+                                                setShowApplyModal(true);
+                                            }}
+                                            className="px-4 py-2 bg-green-100 text-green-700 rounded-lg hover:bg-green-200 transition-colors"
+                                        >
+                                            Áp dụng cho ngày khác
                                         </button>
                                     </div>
                                 </div>
 
-                                <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                                <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
                                     {Object.entries(menu.meals).map(([mealType, mealData]) => (
                                         mealData && Object.keys(mealData).length > 0 && (
-                                            <div key={mealType} className="border rounded p-3">
-                                                <h5 className="font-medium mb-2">
-                                                    {mealType === 'breakfast' ? 'Bữa sáng' :
-                                                     mealType === 'lunch' ? 'Bữa trưa' : 'Bữa phụ'}
-                                                </h5>
-                                                <p><strong>Món:</strong> {mealData.name}</p>
-                                                {mealData.cookingMethods?.length > 0 && (
-                                                    <p><strong>Cách chế biến:</strong> {
-                                                        mealData.cookingMethods.map(method => (
-                                                            method === 'xao' ? 'Xào' :
-                                                            method === 'luoc' ? 'Luộc' :
-                                                            method === 'hap' ? 'Hấp' :
-                                                            method === 'nuong' ? 'Nướng' :
-                                                            method === 'chien' ? 'Chiên' :
-                                                            method === 'kho' ? 'Kho' :
-                                                            method === 'ham' ? 'Hầm' :
-                                                            method === 'soup' ? 'Súp' :
-                                                            method === 'nuoc' ? 'Món nước' :
-                                                            method === 'rang' ? 'Rang' :
-                                                            method === 'muoi' ? 'Muối' :
-                                                            method === 'uop' ? 'Ướp' :
-                                                            method === 'ap_chao' ? 'Áp chảo' : method
-                                                        )).join(', ')
-                                                    }</p>
-                                                )}
-                                                {mealData.ingredients?.length > 0 && (
-                                                    <p><strong>Nguyên liệu:</strong> {
-                                                        mealData.ingredients.map(ing => 
-                                                            `${ing.name} (${ing.amount}${ing.unit})`
-                                                        ).join(', ')
-                                                    }</p>
-                                                )}
-                                                {mealData.ageGroups?.length > 0 && (
-                                                    <p><strong>Độ tuổi:</strong> {
-                                                        mealData.ageGroups.map(age => `${age} tuổi`).join(', ')
-                                                    }</p>
-                    )}
-                </div>
+                                            <div key={mealType} className="border border-gray-200 rounded-lg overflow-hidden hover:border-blue-200 transition-all">
+                                                <div className={`px-4 py-3 ${
+                                                    mealType === 'breakfast' ? 'bg-amber-50 border-b border-amber-100' : 
+                                                    mealType === 'lunch' ? 'bg-blue-50 border-b border-blue-100' : 
+                                                    'bg-teal-50 border-b border-teal-100'
+                                                }`}>
+                                                    <h5 className="font-semibold text-gray-800">
+                                                        {mealType === 'breakfast' ? 'Bữa sáng' :
+                                                         mealType === 'lunch' ? 'Bữa trưa' : 'Bữa phụ'}
+                                                    </h5>
+                                                </div>
+                                                
+                                                <div className="p-4 space-y-4">
+                                                    <div className="bg-white border border-gray-100 rounded-md p-3">
+                                                        <h6 className="font-medium mb-2 text-lg text-gray-800">{mealData.name}</h6>
+                                                        
+                                                        {/* Cách chế biến */}
+                                                        {mealData.cookingMethods?.length > 0 && (
+                                                            <div className="mb-3">
+                                                                <span className="text-sm text-gray-500 block mb-1">Cách chế biến:</span>
+                                                                <div className="flex flex-wrap gap-2">
+                                                                    {mealData.cookingMethods.map(method => {
+                                                                        const methodName = 
+                                                                            method === 'xao' ? 'Xào' :
+                                                                            method === 'luoc' ? 'Luộc' :
+                                                                            method === 'hap' ? 'Hấp' :
+                                                                            method === 'nuong' ? 'Nướng' :
+                                                                            method === 'chien' ? 'Chiên' :
+                                                                            method === 'kho' ? 'Kho' :
+                                                                            method === 'ham' ? 'Hầm' :
+                                                                            method === 'soup' ? 'Súp' :
+                                                                            method === 'nuoc' ? 'Món nước' :
+                                                                            method === 'rang' ? 'Rang' :
+                                                                            method === 'muoi' ? 'Muối' :
+                                                                            method === 'uop' ? 'Ướp' :
+                                                                            method === 'ap_chao' ? 'Áp chảo' : method;
+                                                                            
+                                                                        return (
+                                                                            <span key={method} className="px-2 py-1 bg-yellow-50 text-yellow-700 rounded-full text-sm border border-yellow-100">
+                                                                                {methodName}
+                                                                            </span>
+                                                                        );
+                                                                    })}
+                                                                </div>
+                                                            </div>
+                                                        )}
+                                                        
+                                                        {/* Độ tuổi */}
+                                                        {mealData.ageGroups?.length > 0 && (
+                                                            <div className="mb-3">
+                                                                <span className="text-sm text-gray-500 block mb-1">Độ tuổi phù hợp:</span>
+                                                                <div className="flex flex-wrap gap-2">
+                                                                    {mealData.ageGroups.map(age => (
+                                                                        <span key={age} className="px-2 py-1 bg-purple-50 text-purple-700 rounded-full text-sm border border-purple-100">
+                                                                            {age} tuổi
+                                                                        </span>
+                                                                    ))}
+                                                                </div>
+                                                            </div>
+                                                        )}
+                                                        
+                                                        {/* Nguyên liệu */}
+                                                        {mealData.ingredients?.length > 0 && (
+                                                            <div className="mt-4 border-t pt-3 border-gray-100">
+                                                                <span className="text-sm text-gray-500 block mb-2">Nguyên liệu:</span>
+                                                                <div className="grid grid-cols-2 gap-2">
+                                                                    {mealData.ingredients.map((ing, idx) => (
+                                                                        <div key={idx} className="flex items-center gap-2 text-sm">
+                                                                            <span className="w-2 h-2 rounded-full bg-green-400"></span>
+                                                                            <span className="text-gray-800">
+                                                                                {ing.name}: <span className="font-medium">{ing.amount} {ing.unit}</span>
+                                                                            </span>
+                                                                        </div>
+                                                                    ))}
+                                                                </div>
+                                                            </div>
+                                                        )}
+                                                    </div>
+                                                    
+                                                    {/* Thông tin dinh dưỡng */}
+                                                    <div className="border-t border-gray-100 pt-4">
+                                                        <h6 className="text-sm font-medium text-gray-500 mb-3">Thông tin dinh dưỡng</h6>
+                                                        
+                                                        <div className="grid grid-cols-2 gap-3">
+                                                            {mealData.calories && (
+                                                                <div className="bg-blue-50 p-2 rounded text-sm">
+                                                                    <span className="text-gray-500">Năng lượng:</span>
+                                                                    <span className="block font-medium text-blue-700">{mealData.calories} kcal</span>
+                                                                </div>
+                                                            )}
+                                                            
+                                                            {mealData.protein && (
+                                                                <div className="bg-green-50 p-2 rounded text-sm">
+                                                                    <span className="text-gray-500">Chất đạm:</span>
+                                                                    <span className="block font-medium text-green-700">{mealData.protein}g</span>
+                                                                </div>
+                                                            )}
+                                                            
+                                                            {mealData.carbs && (
+                                                                <div className="bg-orange-50 p-2 rounded text-sm">
+                                                                    <span className="text-gray-500">Tinh bột:</span>
+                                                                    <span className="block font-medium text-orange-700">{mealData.carbs}g</span>
+                                                                </div>
+                                                            )}
+                                                            
+                                                            {mealData.fat && (
+                                                                <div className="bg-yellow-50 p-2 rounded text-sm">
+                                                                    <span className="text-gray-500">Chất béo:</span>
+                                                                    <span className="block font-medium text-yellow-700">{mealData.fat}g</span>
+                                                                </div>
+                                                            )}
+                                                            
+                                                            {mealData.fiber && (
+                                                                <div className="bg-emerald-50 p-2 rounded text-sm">
+                                                                    <span className="text-gray-500">Chất xơ:</span>
+                                                                    <span className="block font-medium text-emerald-700">{mealData.fiber}g</span>
+                                                                </div>
+                                                            )}
+                                                            
+                                                            {mealData.sugar && (
+                                                                <div className="bg-pink-50 p-2 rounded text-sm">
+                                                                    <span className="text-gray-500">Đường:</span>
+                                                                    <span className="block font-medium text-pink-700">{mealData.sugar}g</span>
+                                                                </div>
+                                                            )}
+                                                            
+                                                            {mealData.calcium && (
+                                                                <div className="bg-indigo-50 p-2 rounded text-sm">
+                                                                    <span className="text-gray-500">Canxi:</span>
+                                                                    <span className="block font-medium text-indigo-700">{mealData.calcium}mg</span>
+                                                                </div>
+                                                            )}
+                                                            
+                                                            {mealData.iron && (
+                                                                <div className="bg-red-50 p-2 rounded text-sm">
+                                                                    <span className="text-gray-500">Sắt:</span>
+                                                                    <span className="block font-medium text-red-700">{mealData.iron}mg</span>
+                                                                </div>
+                                                            )}
+                                                            
+                                                            {mealData.vitaminA && (
+                                                                <div className="bg-amber-50 p-2 rounded text-sm">
+                                                                    <span className="text-gray-500">Vitamin A:</span>
+                                                                    <span className="block font-medium text-amber-700">{mealData.vitaminA}mcg</span>
+                                                                </div>
+                                                            )}
+                                                            
+                                                            {mealData.vitaminC && (
+                                                                <div className="bg-lime-50 p-2 rounded text-sm">
+                                                                    <span className="text-gray-500">Vitamin C:</span>
+                                                                    <span className="block font-medium text-lime-700">{mealData.vitaminC}mg</span>
+                                                                </div>
+                                                            )}
+                                                            
+                                                            {mealData.sodium && (
+                                                                <div className="bg-violet-50 p-2 rounded text-sm">
+                                                                    <span className="text-gray-500">Natri:</span>
+                                                                    <span className="block font-medium text-violet-700">{mealData.sodium}mg</span>
+                                                                </div>
+                                                            )}
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
                                         )
                                     ))}
                                 </div>
