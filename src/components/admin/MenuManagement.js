@@ -134,7 +134,7 @@ function MenuManagement() {
                 : await axios.post('http://localhost:3001/menus', menuToSubmit);
             
             toast.success(`Thực đơn đã được ${selectedMenu ? 'cập nhật' : 'tạo'} thành công`);
-            resetForm();
+                resetForm();
             fetchMenus();
             setSavedMeals([]);
         } catch (error) {
@@ -300,35 +300,32 @@ function MenuManagement() {
 
     const handleApplyMenu = async () => {
         if (!applyDate) {
-            alert('Vui lòng chọn ngày áp dụng');
+            toast.error('Vui lòng chọn ngày áp dụng');
             return;
         }
 
         try {
+            // Tạo bản sao của thực đơn và cập nhật ngày
             const newMenu = {
                 ...selectedMenuForApply,
-                id: undefined,
+                id: undefined, // Bỏ ID cũ để tạo mới
                 date: applyDate
             };
 
-            const response = await fetch('http://localhost:3001/menus', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify(newMenu),
-            });
-
-            if (response.ok) {
-                alert('Áp dụng thực đơn thành công!');
-                setShowApplyModal(false);
-                setSelectedMenuForApply(null);
-                setApplyDate('');
-                fetchMenus();
-            }
+            // Sử dụng axios
+            const response = await axios.post('http://localhost:3001/menus', newMenu);
+            
+            toast.success('Áp dụng thực đơn thành công!');
+            setShowApplyModal(false);
+            setSelectedMenuForApply(null);
+            setApplyDate('');
+            fetchMenus();
+            
+            // Tự động chọn ngày mới để hiển thị thực đơn vừa tạo
+            setSelectedDate(applyDate);
         } catch (error) {
             console.error('Lỗi khi áp dụng thực đơn:', error);
-            alert('Có lỗi xảy ra khi áp dụng thực đơn');
+            toast.error('Có lỗi xảy ra khi áp dụng thực đơn');
         }
     };
 
@@ -385,7 +382,7 @@ function MenuManagement() {
                             menu.applyFor.type === 'special_diet' ? 'Áp dụng cho: Chế độ ăn đặc biệt' : 'Áp dụng cho: Sự kiện đặc biệt'
                         }</strong></p>
                         ${menu.applyFor.note ? `<p class='note'>Ghi chú: ${menu.applyFor.note}</p>` : ''}
-                    </div>
+            </div>
             `;
 
             // Duyệt qua các bữa ăn
@@ -508,7 +505,7 @@ function MenuManagement() {
                             onChange={(e) => setSelectedDate(e.target.value)}
                             className="border-2 border-blue-300 rounded-lg px-4 py-3 focus:border-blue-500 focus:ring focus:ring-blue-200 focus:ring-opacity-50"
                         />
-                        <button 
+                        <button
                             type="button"
                             onClick={() => setSelectedDate('')}
                             className="px-4 py-2 bg-gray-200 text-gray-700 rounded hover:bg-gray-300"
@@ -520,7 +517,7 @@ function MenuManagement() {
                         )}
                         {selectedDate && filteredMenus.length > 0 && (
                             <p className="text-green-600 font-medium ml-2">Tìm thấy {filteredMenus.length} thực đơn</p>
-                        )}
+                    )}
                     </div>
                 </div>
 
@@ -561,12 +558,6 @@ function MenuManagement() {
                                         )}
                                     </div>
                                     <div className="flex gap-3">
-                                        <button
-                                            onClick={() => exportToWord(menu)}
-                                            className="px-4 py-2 bg-purple-100 text-purple-700 rounded-lg hover:bg-purple-200 transition-colors"
-                                        >
-                                            Xuất Word
-                                        </button>
                                         <button
                                             onClick={() => {
                                                 setSelectedMenu(menu);
@@ -1319,8 +1310,48 @@ function MenuManagement() {
                     </form>
                     </div>
                 </div>
-        </div>
-    );
-}
 
-export default MenuManagement; 
+                {/* Modal áp dụng thực đơn cho ngày khác */}
+                {showApplyModal && (
+                    <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+                        <div className="bg-white rounded-lg p-6 w-96 shadow-xl">
+                            <h3 className="text-xl font-semibold mb-4">Áp dụng thực đơn cho ngày khác</h3>
+                            <div className="mb-4">
+                                <label className="block text-sm font-medium text-gray-700 mb-2">
+                                    Chọn ngày áp dụng
+                                </label>
+                                <input
+                                    type="date"
+                                    value={applyDate}
+                                    onChange={(e) => setApplyDate(e.target.value)}
+                                    className="w-full border rounded-lg px-3 py-2"
+                                    min={new Date().toISOString().split('T')[0]}
+                                    required
+                                />
+                            </div>
+                            <div className="flex justify-end space-x-3">
+                                <button
+                                    onClick={() => {
+                                        setShowApplyModal(false);
+                                        setSelectedMenuForApply(null);
+                                        setApplyDate('');
+                                    }}
+                                    className="px-4 py-2 border rounded-lg hover:bg-gray-100"
+                                >
+                                    Hủy
+                                </button>
+                                <button
+                                    onClick={handleApplyMenu}
+                                    className="px-4 py-2 bg-green-500 text-white rounded-lg hover:bg-green-600"
+                                >
+                                    Xác nhận
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                )}
+            </div>
+        );
+    }
+
+    export default MenuManagement; 

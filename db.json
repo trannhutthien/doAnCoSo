@@ -774,6 +774,155 @@
           "ingredients": []
         }
       }
+    },
+    {
+      "id": "be3c",
+      "date": "2025-03-30",
+      "applyFor": {
+        "type": "all_class",
+        "studentId": "",
+        "className": "",
+        "note": ""
+      },
+      "meals": {
+        "breakfast": {
+          "name": "cháo thịt bầm rau củ",
+          "calories": "300",
+          "protein": "15",
+          "carbs": "40",
+          "fat": "5",
+          "ageGroups": [
+            "2-3",
+            "3-4",
+            "4-5",
+            "5-6"
+          ],
+          "ingredients": [
+            {
+              "name": "gạo tẻ ",
+              "amount": "1.25",
+              "unit": "kg"
+            },
+            {
+              "name": "Nước dùng xương",
+              "amount": "2500",
+              "unit": "ml"
+            },
+            {
+              "name": "thịt heo hầm",
+              "amount": "1.25",
+              "unit": "kg"
+            },
+            {
+              "name": "cà rốt",
+              "amount": "1.25",
+              "unit": "kg"
+            },
+            {
+              "name": "bí đỏ",
+              "amount": "1.25",
+              "unit": "kg"
+            },
+            {
+              "name": "muối",
+              "amount": "3",
+              "unit": "g"
+            }
+          ],
+          "cookingMethods": [
+            "ham"
+          ]
+        },
+        "lunch": {
+          "name": "Cơm trắng ,thịt bò xào bông cải ,canh rau ngót",
+          "calories": "500",
+          "protein": "20",
+          "carbs": "50",
+          "fat": "10",
+          "ageGroups": [
+            "2-3",
+            "3-4",
+            "4-5",
+            "5-6"
+          ],
+          "ingredients": [
+            {
+              "name": "gạo trắng",
+              "amount": "2.5",
+              "unit": "kg"
+            },
+            {
+              "name": "thịt bò",
+              "amount": "2",
+              "unit": "kg"
+            },
+            {
+              "name": "bông cải xanh",
+              "amount": "1.25",
+              "unit": "kg"
+            },
+            {
+              "name": "Rau ngót",
+              "amount": "1.25",
+              "unit": "kg"
+            },
+            {
+              "name": "dầu ô liu",
+              "amount": "25",
+              "unit": "ml"
+            },
+            {
+              "name": "nước",
+              "amount": "5000",
+              "unit": "ml"
+            }
+          ],
+          "cookingMethods": [
+            "xao",
+            "nuoc"
+          ]
+        },
+        "snack": {
+          "name": "Bánh canh cá lóc",
+          "calories": "300",
+          "protein": "20",
+          "carbs": "40",
+          "fat": "5",
+          "ageGroups": [],
+          "ingredients": [
+            {
+              "name": "Cá lóc",
+              "amount": "1.25",
+              "unit": "kg"
+            },
+            {
+              "name": "Bột bánh canh",
+              "amount": "1.25",
+              "unit": "kg"
+            },
+            {
+              "name": "Nấm rơm ",
+              "amount": "1.25",
+              "unit": "kg"
+            },
+            {
+              "name": "Hành lá",
+              "amount": "500",
+              "unit": "g"
+            },
+            {
+              "name": "nước dùng xương",
+              "amount": "5000",
+              "unit": "ml"
+            }
+          ],
+          "cookingMethods": [
+            "luoc",
+            "nuoc"
+          ],
+          "fiber": "4"
+        }
+      }
     }
   ],
   "menu_evaluations": [
